@@ -321,9 +321,10 @@
   var kidsCountGroup = document.getElementById('kids-count-group');
   var formNextUrl = document.getElementById('form-next-url');
 
-  // URL de retorno tras envio (misma pagina con parametro)
+  // URL de retorno tras envio (pagina de agradecimiento)
   if (formNextUrl) {
-    formNextUrl.value = window.location.href.split('?')[0] + '?confirmed=true';
+    var base = window.location.href.split('?')[0];
+    formNextUrl.value = base.replace(/index\.html$/, '') + 'gracias.html';
   }
 
   // Abrir formulario con animacion de puertas
@@ -416,7 +417,7 @@
         return; // sale sin e.preventDefault()
       }
 
-      // Si ya esta activado, usar AJAX
+      // Si ya esta activado, usar AJAX y redirigir a gracias.html
       e.preventDefault();
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando...';
@@ -430,9 +431,7 @@
       })
       .then(function (response) {
         if (response.ok) {
-          rsvpFormWrapper.classList.add('hidden');
-          rsvpSuccess.classList.remove('hidden');
-          rsvpSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          window.location.href = formNextUrl.value;
         } else {
           throw new Error('Error en el envio');
         }
@@ -440,7 +439,7 @@
       .catch(function () {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Enviar Confirmacion';
-        // Fallback: enviar de forma tradicional
+        // Fallback: enviar de forma tradicional (redirige via _next)
         rsvpForm.submit();
       });
     });
