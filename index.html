@@ -396,6 +396,22 @@
         Confirmar Asistencia
       </button>
 
+      <!-- Animacion de puertas -->
+      <div class="doors-overlay hidden" id="doors-overlay">
+        <div class="door door-left">
+          <div class="door-panel">
+            <div class="door-frame"></div>
+            <div class="door-handle"></div>
+          </div>
+        </div>
+        <div class="door door-right">
+          <div class="door-panel">
+            <div class="door-frame"></div>
+            <div class="door-handle"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Formulario de confirmacion -->
       <div class="rsvp-form-wrapper hidden" id="rsvp-form-wrapper">
         <form
@@ -537,6 +553,125 @@
         <div class="success-icon">&#10003;</div>
         <p class="success-text">¡Gracias por confirmar!</p>
         <p class="success-subtext">Hemos recibido tu respuesta.<br>¡Nos vemos el 29 de mayo!</p>
+      </div>
+    </section>
+
+    <!-- Regalos -->
+    <section class="section-gifts fade-in-section">
+      <h3 class="gifts-title">Regalos</h3>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+      <div class="gifts-icon">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#C9A84C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="8" width="18" height="13" rx="1"/>
+          <path d="M12 8v13"/>
+          <path d="M3 12h18"/>
+          <path d="M12 8c-1.5-2-4-3.5-5-2.5s0 3.5 5 5.5"/>
+          <path d="M12 8c1.5-2 4-3.5 5-2.5s0 3.5-5 5.5"/>
+        </svg>
+      </div>
+      <p class="gifts-text">
+        Vuestra asistencia es lo mas importante para nosotros.<br>
+        Si quereis hacer un regalo, podeis hacerlo de la forma que os resulte mas comoda.
+      </p>
+      <div class="accordion-item">
+        <button class="accordion-header" id="acc-bank">
+          <span>Aportacion bancaria</span>
+          <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="accordion-body hidden" id="acc-bank-body">
+          <div class="bank-details">
+            <p><strong>Titular:</strong> Victor Mendez y Leticia Campillo</p>
+            <p><strong>Banco:</strong> Banco Ejemplo</p>
+            <p><strong>IBAN:</strong> ES12 3456 7890 1234 5678 9012</p>
+            <p><strong>Concepto:</strong> Boda V&L + vuestro nombre</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Album compartido -->
+    <section class="section-album fade-in-section">
+      <h3 class="album-title">Album Compartido</h3>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+      <p class="album-text">
+        ¡Queremos ver la boda desde vuestros ojos!<br>
+        Escanea el QR para subir tus fotos y videos al album compartido.
+      </p>
+      <div class="album-qr">
+        <canvas id="qr-canvas"></canvas>
+      </div>
+      <a href="https://photos.app.goo.gl/ALBUM_ID_AQUI" target="_blank" rel="noopener" class="album-link" id="album-link">
+        Abrir album
+      </a>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section class="section-faq fade-in-section">
+      <h3 class="faq-title">Preguntas Frecuentes</h3>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+
+      <div class="faq-list">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Habra parking?</span>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="accordion-body hidden">
+            <p>Si, el Hotel Essentia dispone de parking gratuito para todos los invitados.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Hora del check-in?</span>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="accordion-body hidden">
+            <p>Sera a las 15:00 h en la recepcion del hotel. Alli os daran la habitacion que os corresponda.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Que puedo tirar en la ceremonia?</span>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="accordion-body hidden">
+            <p>Debido al suelo de las instalaciones, esta totalmente prohibido tirar arroz en la zona de la ceremonia. Dejaremos unos conos de petalos para que los tireis.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Puedo sacar fotos?</span>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="accordion-body hidden">
+            <p>Si, es posible sacar fotos y videos durante la ceremonia y podeis compartirlo en nuestro album compartido.</p>
+          </div>
+        </div>
       </div>
     </section>
 

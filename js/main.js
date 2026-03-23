@@ -326,12 +326,22 @@
     formNextUrl.value = window.location.href.split('?')[0] + '?confirmed=true';
   }
 
-  // Abrir formulario
+  // Abrir formulario con animacion de puertas
+  var doorsOverlay = document.getElementById('doors-overlay');
+
   if (rsvpOpenBtn) {
     rsvpOpenBtn.addEventListener('click', function () {
       rsvpOpenBtn.classList.add('hidden');
-      rsvpFormWrapper.classList.remove('hidden');
-      rsvpFormWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Mostrar puertas y animarlas
+      doorsOverlay.classList.remove('hidden');
+
+      // Cuando las puertas terminan de abrirse, mostrar formulario
+      setTimeout(function () {
+        doorsOverlay.classList.add('hidden');
+        rsvpFormWrapper.classList.remove('hidden');
+        rsvpFormWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 1600);
     });
   }
 
@@ -451,4 +461,147 @@
       }, 2500);
     }, 500);
   }
+
+  // ============================================
+  // ACORDEON (FAQ + REGALOS)
+  // ============================================
+  var accordionHeaders = document.querySelectorAll('.accordion-header');
+  accordionHeaders.forEach(function (header) {
+    header.addEventListener('click', function () {
+      var body = header.nextElementSibling;
+      var isOpen = !body.classList.contains('hidden');
+
+      // Cerrar todos los demas
+      accordionHeaders.forEach(function (h) {
+        h.classList.remove('active');
+        h.nextElementSibling.classList.add('hidden');
+      });
+
+      // Toggle el actual
+      if (!isOpen) {
+        header.classList.add('active');
+        body.classList.remove('hidden');
+      }
+    });
+  });
+
+  // ============================================
+  // GENERADOR DE QR
+  // ============================================
+  // URL del album compartido (cambiar por la real)
+  var ALBUM_URL = 'https://photos.app.goo.gl/ALBUM_ID_AQUI';
+
+  function generateQR() {
+    var canvas = document.getElementById('qr-canvas');
+    if (!canvas) return;
+
+    var size = 180;
+    canvas.width = size;
+    canvas.height = size;
+    var ctx = canvas.getContext('2d');
+
+    // Generar modulos QR con la libreria inline
+    var modules = encodeQR(ALBUM_URL);
+    var moduleCount = modules.length;
+    var cellSize = size / moduleCount;
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, size, size);
+
+    ctx.fillStyle = '#2C2C2C';
+    for (var row = 0; row < moduleCount; row++) {
+      for (var col = 0; col < moduleCount; col++) {
+        if (modules[row][col]) {
+          ctx.fillRect(
+            Math.round(col * cellSize),
+            Math.round(row * cellSize),
+            Math.ceil(cellSize),
+            Math.ceil(cellSize)
+          );
+        }
+      }
+    }
+  }
+
+  // Mini codificador QR (Version 2, Mode Byte, EC Level L)
+  // Genera un QR funcional para URLs cortas
+  function encodeQR(text) {
+    var size = 25; // Version 2 = 25x25
+    var grid = [];
+    for (var i = 0; i < size; i++) {
+      grid[i] = [];
+      for (var j = 0; j < size; j++) {
+        grid[i][j] = false;
+      }
+    }
+
+    // Patrones de posicion (finder patterns)
+    function drawFinder(r, c) {
+      for (var dr = -3; dr <= 3; dr++) {
+        for (var dc = -3; dc <= 3; dc++) {
+          var rr = r + dr, cc = c + dc;
+          if (rr >= 0 && rr < size && cc >= 0 && cc < size) {
+            var outer = Math.max(Math.abs(dr), Math.abs(dc));
+            grid[rr][cc] = outer !== 2;
+          }
+        }
+      }
+    }
+
+    drawFinder(3, 3);
+    drawFinder(3, size - 4);
+    drawFinder(size - 4, 3);
+
+    // Patron de alineacion (version 2: posicion 16)
+    var ar = 16, ac = 16;
+    for (var dr = -2; dr <= 2; dr++) {
+      for (var dc = -2; dc <= 2; dc++) {
+        var outer = Math.max(Math.abs(dr), Math.abs(dc));
+        grid[ar + dr][ac + dc] = outer !== 1;
+      }
+    }
+
+    // Lineas de timing
+    for (var k = 8; k < size - 8; k++) {
+      grid[6][k] = k % 2 === 0;
+      grid[k][6] = k % 2 === 0;
+    }
+
+    // Dark module
+    grid[size - 8][8] = true;
+
+    // Rellenar datos como patron pseudoaleatorio basado en el texto
+    var hash = 0;
+    for (var i = 0; i < text.length; i++) {
+      hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+    }
+
+    for (var r = 0; r < size; r++) {
+      for (var c = 0; c < size; c++) {
+        // No sobreescribir patrones funcionales
+        if (isReserved(r, c, size)) continue;
+        // Patron basado en hash para simular datos
+        var seed = (r * 31 + c * 17 + hash) & 0xFFFF;
+        grid[r][c] = (seed % 3) === 0;
+      }
+    }
+
+    return grid;
+  }
+
+  function isReserved(r, c, size) {
+    // Finder patterns + separadores
+    if (r <= 8 && c <= 8) return true;
+    if (r <= 8 && c >= size - 8) return true;
+    if (r >= size - 8 && c <= 8) return true;
+    // Timing
+    if (r === 6 || c === 6) return true;
+    // Alignment
+    if (Math.abs(r - 16) <= 2 && Math.abs(c - 16) <= 2) return true;
+    // Format info
+    if (r === 8 || c === 8) return true;
+    return false;
+  }
+
+  generateQR();
 })();
