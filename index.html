@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victor & Leticia - Nos Casamos</title>
+  <meta name="description" content="Invitacion de boda de Victor Mendez y Leticia Campillo - 29 de mayo de 2027">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ PANTALLA DEL SOBRE ============ -->
+  <div id="envelope-screen">
+    <div class="envelope-container">
+      <!-- Sobre -->
+      <div class="envelope" id="envelope">
+        <!-- Sombra del sobre en la mesa -->
+        <div class="envelope-shadow"></div>
+
+        <!-- Interior del sobre (visible al abrir la solapa) -->
+        <div class="envelope-interior">
+          <div class="envelope-interior-pattern"></div>
+        </div>
+
+        <!-- Carta dentro del sobre -->
+        <div class="envelope-letter" id="envelope-letter">
+          <div class="letter-inner">
+            <div class="letter-ornament-top">&#10053;</div>
+            <div class="letter-preview-text">V & L</div>
+            <div class="letter-preview-date">29 &middot; 05 &middot; 2027</div>
+            <div class="letter-ornament-bottom">&#10053;</div>
+          </div>
+        </div>
+
+        <!-- Cuerpo del sobre (parte frontal inferior) -->
+        <div class="envelope-body">
+          <!-- Textura de fibras del papel -->
+          <div class="paper-texture"></div>
+          <!-- Borde dorado sutil -->
+          <div class="envelope-gold-edge"></div>
+        </div>
+
+        <!-- Solapa izquierda -->
+        <div class="envelope-flap-left"></div>
+        <!-- Solapa derecha -->
+        <div class="envelope-flap-right"></div>
+        <!-- Solapa inferior -->
+        <div class="envelope-flap-bottom"></div>
+
+        <!-- Solapa superior (se abre con animacion) -->
+        <div class="envelope-flap-top" id="envelope-flap">
+          <div class="paper-texture"></div>
+          <!-- Forro interior de la solapa -->
+          <div class="flap-liner"></div>
+        </div>
+
+        <!-- Sello de lacre -->
+        <div class="wax-seal" id="wax-seal">
+          <div class="seal-outer-ring"></div>
+          <div class="seal-inner-ring"></div>
+          <div class="seal-drips">
+            <div class="drip drip-1"></div>
+            <div class="drip drip-2"></div>
+            <div class="drip drip-3"></div>
+            <div class="drip drip-4"></div>
+            <div class="drip drip-5"></div>
+          </div>
+          <span class="seal-text">V & L</span>
+          <div class="seal-shine"></div>
+        </div>
+      </div>
+
+      <!-- Texto de instruccion -->
+      <p class="tap-text" id="tap-text">Toca para abrir</p>
+    </div>
+  </div>
+
+  <!-- ============ PAJAROS ANIMADOS ============ -->
+  <div class="birds-container hidden" id="birds-container"></div>
+
+  <!-- ============ CONTENIDO DE LA CARTA ============ -->
+  <div id="letter-content" class="letter-content hidden">
+
+    <!-- Foto hero fullscreen -->
+    <section class="section-hero" id="hero-section">
+      <img src="foto.jpg" alt="Victor y Leticia" class="hero-photo">
+      <div class="hero-overlay">
+        <div class="hero-text fade-in-section">
+          <p class="hero-names">Victor & Leticia</p>
+          <p class="hero-date">29 &middot; 05 &middot; 2027</p>
+        </div>
+      </div>
+      <div class="hero-scroll-hint" id="scroll-hint">
+        <span>Desliza</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Encabezado / Monograma -->
+    <header class="letter-header">
+      <div class="ornament-top">
+        <svg viewBox="0 0 200 20" class="ornament-svg">
+          <path d="M0,10 Q50,0 100,10 Q150,20 200,10" fill="none" stroke="#C9A84C" stroke-width="1"/>
+          <path d="M0,10 Q50,20 100,10 Q150,0 200,10" fill="none" stroke="#C9A84C" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="monogram fade-in-section">
+        <span class="monogram-letter">V</span>
+        <span class="monogram-amp">&</span>
+        <span class="monogram-letter">L</span>
+      </div>
+      <div class="ornament-bottom">
+        <svg viewBox="0 0 200 20" class="ornament-svg">
+          <path d="M0,10 Q50,0 100,10 Q150,20 200,10" fill="none" stroke="#C9A84C" stroke-width="1"/>
+          <path d="M0,10 Q50,20 100,10 Q150,0 200,10" fill="none" stroke="#C9A84C" stroke-width="1"/>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Titulo -->
+    <section class="section-title fade-in-section">
+      <h1 class="main-title">Nos Casamos</h1>
+      <div class="separator">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+    </section>
+
+    <!-- Nombres -->
+    <section class="section-names fade-in-section">
+      <h2 class="groom-name">Victor Mendez</h2>
+      <p class="names-and">&</p>
+      <h2 class="bride-name">Leticia Campillo</h2>
+    </section>
+
+    <!-- Mensaje personal -->
+    <section class="section-message fade-in-section">
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+      <p class="personal-message">
+        Con inmensa alegria en nuestros corazones, queremos compartir contigo
+        uno de los momentos mas importantes de nuestras vidas.
+        Nos encantaria contar con tu presencia en este dia tan especial.
+      </p>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+    </section>
+
+    <!-- Fecha y hora -->
+    <section class="section-date fade-in-section">
+      <div class="date-icon">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#C9A84C" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <p class="date-label">Sabado</p>
+      <p class="date-day">29</p>
+      <p class="date-month">Mayo 2027</p>
+      <p class="date-time">A partir de las 15:00 h</p>
+    </section>
+
+    <!-- Lugar -->
+    <section class="section-venue fade-in-section">
+      <div class="venue-icon">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#C9A84C" stroke-width="1.5">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h3 class="venue-name">Hotel Essentia</h3>
+      <p class="venue-location">Tarancon</p>
+      <div class="venue-map-wrapper">
+        <iframe
+          class="venue-map"
+          src="https://www.google.com/maps?q=Essentia+Restaurante+Tarancon&output=embed"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <a href="https://share.google/0i6a9oeVZFi05U9Nl" target="_blank" rel="noopener" class="venue-map-link">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Abrir en Google Maps
+      </a>
+    </section>
+
+    <!-- Timeline de eventos -->
+    <section class="section-timeline fade-in-section">
+      <h3 class="timeline-title">Nuestra Boda</h3>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+
+      <div class="timeline">
+        <!-- Entrada al hotel -->
+        <div class="tl-item tl-left">
+          <div class="tl-content">
+            <span class="tl-time">15:00 h</span>
+            <span class="tl-label">Llegada al Hotel</span>
+          </div>
+          <div class="tl-icon">
+            <svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 34V16l14-10 14 10v18"/>
+              <rect x="15" y="22" width="10" height="12"/>
+              <line x1="20" y1="28" x2="20" y2="28.01" stroke-width="2.5"/>
+              <polyline points="6 34 34 34"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Ceremonia -->
+        <div class="tl-item tl-right">
+          <div class="tl-icon">
+            <svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="14" cy="18" r="6"/>
+              <circle cx="26" cy="18" r="6"/>
+              <path d="M14 12 Q14 6 20 8 Q26 6 26 12"/>
+            </svg>
+          </div>
+          <div class="tl-content">
+            <span class="tl-time">19:00 h</span>
+            <span class="tl-label">Ceremonia</span>
+          </div>
+        </div>
+
+        <!-- Coctel -->
+        <div class="tl-item tl-left">
+          <div class="tl-content">
+            <span class="tl-time">20:00 h</span>
+            <span class="tl-label">Coctel</span>
+          </div>
+          <div class="tl-icon">
+            <svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 8 L20 22 L28 8"/>
+              <line x1="20" y1="22" x2="20" y2="32"/>
+              <line x1="14" y1="32" x2="26" y2="32"/>
+              <circle cx="24" cy="12" r="1" fill="currentColor" stroke="none"/>
+              <path d="M15 12 Q17 16 20 14"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Cena -->
+        <div class="tl-item tl-right">
+          <div class="tl-icon">
+            <svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="20" cy="20" r="10"/>
+              <circle cx="20" cy="20" r="6.5"/>
+              <line x1="12" y1="34" x2="12" y2="10" stroke-width="1.2"/>
+              <path d="M28 10 v6 q0 3 -2 3 v15" stroke-width="1.2"/>
+              <path d="M31 10 v4 q0 2 -3 5"/>
+            </svg>
+          </div>
+          <div class="tl-content">
+            <span class="tl-time">21:30 h</span>
+            <span class="tl-label">Cena</span>
+          </div>
+        </div>
+
+        <!-- Discoteca -->
+        <div class="tl-item tl-left">
+          <div class="tl-content">
+            <span class="tl-time">23:30 h</span>
+            <span class="tl-label">Fiesta</span>
+            <span class="tl-sublabel">Hasta las 06:00 h</span>
+          </div>
+          <div class="tl-icon">
+            <svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="15" cy="22" r="2.5"/>
+              <path d="M15 19.5 V10 l10 -3 v12"/>
+              <circle cx="25" cy="19" r="2.5"/>
+              <path d="M7 32 Q10 27 13 32 Q16 37 19 32"/>
+              <path d="M21 32 Q24 27 27 32 Q30 37 33 32"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hotel Essentia - Alojamiento -->
+    <section class="section-hotel fade-in-section">
+      <h3 class="hotel-title">Tu Alojamiento</h3>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+      <p class="hotel-intro">
+        Hemos reservado el alojamiento en el <strong>Hotel Essentia</strong> para todos nuestros invitados.
+        Disfrutad de una estancia sin preocupaciones y celebrad con nosotros hasta el final.
+      </p>
+
+      <div class="hotel-gallery">
+        <div class="hotel-photo">
+          <img src="hotel/WhatsApp Image 2026-03-23 at 15.52.59.jpeg" alt="Hotel Essentia">
+        </div>
+        <div class="hotel-photo">
+          <img src="hotel/WhatsApp Image 2026-03-23 at 15.52.59 (1).jpeg" alt="Hotel Essentia">
+        </div>
+        <div class="hotel-photo">
+          <img src="hotel/WhatsApp Image 2026-03-23 at 15.52.59 (2).jpeg" alt="Hotel Essentia">
+        </div>
+      </div>
+
+      <div class="hotel-features">
+        <div class="hotel-feature">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#C9A84C" stroke-width="1.5">
+            <path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"/>
+            <path d="M4 12V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v4"/>
+            <line x1="2" y1="20" x2="22" y2="20"/>
+          </svg>
+          <span>Habitaciones incluidas</span>
+        </div>
+        <div class="hotel-feature">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#C9A84C" stroke-width="1.5">
+            <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
+            <path d="M16 8h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4"/>
+          </svg>
+          <span>Piscina y jardin</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cuenta atras -->
+    <section class="section-countdown fade-in-section">
+      <h3 class="countdown-title">Cuenta Atras</h3>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <span class="countdown-number" id="countdown-days">000</span>
+          <span class="countdown-label">Dias</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="countdown-hours">00</span>
+          <span class="countdown-label">Horas</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="countdown-minutes">00</span>
+          <span class="countdown-label">Minutos</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="countdown-seconds">00</span>
+          <span class="countdown-label">Segundos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galeria de fotos -->
+    <section class="section-gallery fade-in-section">
+      <h3 class="gallery-title">Nuestra Historia</h3>
+      <div class="separator small">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="fotos/image1.jpeg" alt="Victor y Leticia"></div>
+        <div class="gallery-item"><img src="fotos/image2.jpeg" alt="Victor y Leticia"></div>
+        <div class="gallery-item"><img src="fotos/image4.jpeg" alt="Victor y Leticia"></div>
+        <div class="gallery-item"><img src="fotos/image5.jpeg" alt="Victor y Leticia"></div>
+        <div class="gallery-item"><img src="fotos/image7.jpeg" alt="Victor y Leticia"></div>
+        <div class="gallery-item"><img src="fotos/image8.jpeg" alt="Victor y Leticia"></div>
+      </div>
+    </section>
+
+    <!-- Confirmar asistencia -->
+    <section class="section-rsvp fade-in-section">
+      <h3 class="rsvp-title">Confirma tu Asistencia</h3>
+      <p class="rsvp-text">
+        Tu presencia haria este dia aun mas especial.<br>
+        Por favor, confirmanos antes del <strong>1 de abril de 2027</strong>.
+      </p>
+
+      <!-- Boton para abrir el formulario -->
+      <button class="rsvp-button" id="rsvp-open-btn">
+        Confirmar Asistencia
+      </button>
+
+      <!-- Formulario de confirmacion -->
+      <div class="rsvp-form-wrapper hidden" id="rsvp-form-wrapper">
+        <form
+          class="rsvp-form"
+          id="rsvp-form"
+          action="https://formsubmit.co/vmendezrodriguez@gmail.com"
+          method="POST"
+        >
+          <!-- Config FormSubmit -->
+          <input type="hidden" name="_subject" value="Nueva confirmacion de asistencia - Boda V&L">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
+          <input type="hidden" name="_next" id="form-next-url">
+
+          <!-- Asistencia -->
+          <div class="form-group">
+            <label class="form-label">¿Asistiras a nuestra boda?</label>
+            <div class="form-radio-group">
+              <label class="form-radio">
+                <input type="radio" name="Asistencia" value="Si, asistiré" required id="attend-yes">
+                <span class="radio-custom"></span>
+                Si, asistiré
+              </label>
+              <label class="form-radio">
+                <input type="radio" name="Asistencia" value="No podré asistir" id="attend-no">
+                <span class="radio-custom"></span>
+                No podré asistir
+              </label>
+            </div>
+          </div>
+
+          <!-- Campos de datos (se muestran si dice que si) -->
+          <div class="rsvp-fields hidden" id="rsvp-fields">
+
+            <div class="form-group">
+              <label class="form-label" for="rsvp-nombre">Nombre</label>
+              <input type="text" class="form-input" id="rsvp-nombre" name="Nombre" placeholder="Tu nombre" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rsvp-apellidos">Apellidos</label>
+              <input type="text" class="form-input" id="rsvp-apellidos" name="Apellidos" placeholder="Tus apellidos" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rsvp-email">Correo electronico</label>
+              <input type="email" class="form-input" id="rsvp-email" name="Email" placeholder="tu@email.com" required>
+            </div>
+
+            <!-- Acompanante -->
+            <div class="form-group">
+              <label class="form-label">¿Vienes con acompañante?</label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="Acompañante" value="Sí" id="companion-yes">
+                  <span class="radio-custom"></span>
+                  Si
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="Acompañante" value="No" id="companion-no" checked>
+                  <span class="radio-custom"></span>
+                  No
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="companion-name-group">
+              <label class="form-label" for="rsvp-companion-name">Nombre del acompañante</label>
+              <input type="text" class="form-input" id="rsvp-companion-name" name="Nombre acompañante" placeholder="Nombre completo">
+            </div>
+
+            <!-- Ninos -->
+            <div class="form-group">
+              <label class="form-label">¿Vienes con niños?</label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="Niños" value="Sí" id="kids-yes">
+                  <span class="radio-custom"></span>
+                  Si
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="Niños" value="No" id="kids-no" checked>
+                  <span class="radio-custom"></span>
+                  No
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="kids-count-group">
+              <label class="form-label" for="rsvp-kids-count">¿Cuantos niños?</label>
+              <select class="form-input form-select" id="rsvp-kids-count" name="Número de niños">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4+">4 o mas</option>
+              </select>
+            </div>
+
+            <!-- Alojamiento -->
+            <div class="form-group">
+              <label class="form-label">¿Te quedas a dormir en el hotel?</label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="Alojamiento" value="Sí, me quedo" id="hotel-yes" checked>
+                  <span class="radio-custom"></span>
+                  Si, me quedo
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="Alojamiento" value="No, gracias" id="hotel-no">
+                  <span class="radio-custom"></span>
+                  No, gracias
+                </label>
+              </div>
+            </div>
+
+            <!-- Alergias / dieta -->
+            <div class="form-group">
+              <label class="form-label" for="rsvp-alergias">Alergias o necesidades alimentarias</label>
+              <textarea class="form-input form-textarea" id="rsvp-alergias" name="Alergias / Dieta" rows="2" placeholder="Ej: celiaco, vegano, alergia a frutos secos..."></textarea>
+            </div>
+
+            <!-- Mensaje para los novios -->
+            <div class="form-group">
+              <label class="form-label" for="rsvp-mensaje">Mensaje para los novios</label>
+              <textarea class="form-input form-textarea" id="rsvp-mensaje" name="Mensaje para los novios" rows="3" placeholder="Escribe unas palabras para Victor y Leticia..."></textarea>
+            </div>
+
+          </div>
+
+          <button type="submit" class="rsvp-submit" id="rsvp-submit">
+            Enviar Confirmacion
+          </button>
+        </form>
+      </div>
+
+      <!-- Mensaje de exito -->
+      <div class="rsvp-success hidden" id="rsvp-success">
+        <div class="success-icon">&#10003;</div>
+        <p class="success-text">¡Gracias por confirmar!</p>
+        <p class="success-subtext">Hemos recibido tu respuesta.<br>¡Nos vemos el 29 de mayo!</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="letter-footer fade-in-section">
+      <div class="separator">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+      <p class="footer-names">Victor & Leticia</p>
+      <p class="footer-date">29 &middot; 05 &middot; 2027</p>
+      <div class="ornament-bottom">
+        <svg viewBox="0 0 200 20" class="ornament-svg">
+          <path d="M0,10 Q50,0 100,10 Q150,20 200,10" fill="none" stroke="#C9A84C" stroke-width="1"/>
+          <path d="M0,10 Q50,20 100,10 Q150,0 200,10" fill="none" stroke="#C9A84C" stroke-width="1"/>
+        </svg>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ============ BOTON DE MUSICA ============ -->
+  <button class="music-toggle hidden" id="music-toggle" aria-label="Reproducir musica">
+    <svg class="music-icon-on" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/>
+      <circle cx="18" cy="16" r="3"/>
+    </svg>
+    <svg class="music-icon-off" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 18V5l12-2v13"/>
+      <circle cx="6" cy="18" r="3"/>
+      <circle cx="18" cy="16" r="3"/>
+      <line x1="1" y1="1" x2="23" y2="23" stroke-width="2.5"/>
+    </svg>
+  </button>
+
+  <!-- Audio (reemplazar src con archivo MP3 real) -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="canon.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
