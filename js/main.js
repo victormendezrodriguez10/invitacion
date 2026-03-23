@@ -356,10 +356,14 @@
 
   // Mostrar/ocultar nombre acompanante
   function toggleCompanion() {
+    var companionInput = document.getElementById('rsvp-companion-name');
     if (companionYes && companionYes.checked) {
       companionNameGroup.classList.remove('hidden');
+      companionInput.disabled = false;
     } else {
       companionNameGroup.classList.add('hidden');
+      companionInput.disabled = true;
+      companionInput.value = '';
     }
   }
 
@@ -368,10 +372,13 @@
 
   // Mostrar/ocultar cantidad ninos
   function toggleKids() {
+    var kidsSelect = document.getElementById('rsvp-kids-count');
     if (kidsYes && kidsYes.checked) {
       kidsCountGroup.classList.remove('hidden');
+      kidsSelect.disabled = false;
     } else {
       kidsCountGroup.classList.add('hidden');
+      kidsSelect.disabled = true;
     }
   }
 
