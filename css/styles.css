@@ -2186,8 +2186,8 @@ body {
    ============================================ */
 .fade-in-section {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(50px);
+  transition: opacity 1.8s ease, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .fade-in-section.visible {
@@ -2197,11 +2197,13 @@ body {
 
 /* Variaciones de direccion para items alternos del timeline */
 .tl-left.fade-in-section {
-  transform: translateX(-40px) translateY(20px);
+  transform: translateX(-50px) translateY(25px);
+  transition: opacity 1.8s ease, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tl-right.fade-in-section {
-  transform: translateX(40px) translateY(20px);
+  transform: translateX(50px) translateY(25px);
+  transition: opacity 1.8s ease, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tl-left.fade-in-section.visible,
@@ -2211,15 +2213,16 @@ body {
 
 /* Delay escalonado para la galeria */
 .gallery-mosaic .fade-in-section:nth-child(1) { transition-delay: 0s; }
-.gallery-mosaic .fade-in-section:nth-child(2) { transition-delay: 0.15s; }
-.gallery-mosaic .fade-in-section:nth-child(3) { transition-delay: 0.3s; }
-.gallery-mosaic .fade-in-section:nth-child(4) { transition-delay: 0.45s; }
-.gallery-mosaic .fade-in-section:nth-child(5) { transition-delay: 0.6s; }
-.gallery-mosaic .fade-in-section:nth-child(6) { transition-delay: 0.75s; }
+.gallery-mosaic .fade-in-section:nth-child(2) { transition-delay: 0.2s; }
+.gallery-mosaic .fade-in-section:nth-child(3) { transition-delay: 0.4s; }
+.gallery-mosaic .fade-in-section:nth-child(4) { transition-delay: 0.6s; }
+.gallery-mosaic .fade-in-section:nth-child(5) { transition-delay: 0.8s; }
+.gallery-mosaic .fade-in-section:nth-child(6) { transition-delay: 1s; }
 
 /* Efecto escala sutil para fotos al aparecer */
 .gallery-item.fade-in-section {
-  transform: translateY(30px) scale(0.92);
+  transform: translateY(40px) scale(0.88);
+  transition: opacity 2s ease, transform 2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gallery-item.fade-in-section.visible {
