@@ -321,7 +321,20 @@
     var p = music.play();
     if (p !== undefined) {
       p.then(function () { playing = true; })
-       .catch(function () { musicBtn.classList.add('paused'); });
+       .catch(function () {
+          musicBtn.classList.add('paused');
+          // Intentar reproducir al primer toque en la pantalla
+          function playOnTouch() {
+            music.play().then(function () {
+              playing = true;
+              musicBtn.classList.remove('paused');
+            });
+            document.removeEventListener('click', playOnTouch);
+            document.removeEventListener('touchstart', playOnTouch);
+          }
+          document.addEventListener('click', playOnTouch);
+          document.addEventListener('touchstart', playOnTouch);
+       });
     }
 
     musicBtn.addEventListener('click', function () {

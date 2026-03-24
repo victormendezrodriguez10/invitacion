@@ -28,6 +28,9 @@
     if (isOpened) return;
     isOpened = true;
 
+    // Iniciar musica inmediatamente (dentro del gesto del usuario)
+    startMusic();
+
     // Fase 1: Sello se rompe + solapa se abre + carta sale
     envelope.classList.add('opening');
 
@@ -79,7 +82,6 @@
       musicToggle.classList.remove('hidden');
       birdsContainer.classList.remove('hidden');
       launchBirds();
-      startMusic();
       initScrollAnimations();
       startCountdown();
       document.body.style.overflow = 'auto';
