@@ -28,37 +28,62 @@
     if (isOpened) return;
     isOpened = true;
 
-    // Animar apertura del sobre
+    // Fase 1: Sello se rompe + solapa se abre + carta sale
     envelope.classList.add('opening');
 
-    // Despues de la animacion de la carta saliendo, mostrar el contenido
+    // Fase 2: Capturar posicion de la carta y moverla al centro
+    setTimeout(function () {
+      var letter = document.getElementById('envelope-letter');
+      var rect = letter.getBoundingClientRect();
+
+      // Fijar la carta en su posicion actual exacta (sin salto visual)
+      letter.style.animation = 'none';
+      letter.style.position = 'fixed';
+      letter.style.top = rect.top + 'px';
+      letter.style.left = rect.left + 'px';
+      letter.style.width = rect.width + 'px';
+      letter.style.height = rect.height + 'px';
+      letter.style.transform = 'none';
+      letter.style.zIndex = '2000';
+      letter.style.opacity = '1';
+      envelopeScreen.appendChild(letter);
+
+      // Desvanecer el sobre
+      envelope.style.transition = 'opacity 1s ease';
+      envelope.style.opacity = '0';
+
+      // Reflow para que el navegador registre la posicion inicial
+      void letter.offsetWidth;
+
+      // Animar al centro manteniendo la misma forma
+      letter.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+      letter.style.top = '50%';
+      letter.style.left = '50%';
+      letter.style.transform = 'translate(-50%, -50%) scale(2)';
+      letter.style.borderRadius = '8px';
+      letter.style.boxShadow = '0 20px 50px rgba(0,0,0,0.12)';
+    }, 3500);
+
+    // Fase 3: Desvanecer todo
+    setTimeout(function () {
+      envelopeScreen.style.transition = 'opacity 0.8s ease';
+      envelopeScreen.style.opacity = '0';
+    }, 5200);
+
+    // Fase 4: Mostrar contenido
     setTimeout(function () {
       envelopeScreen.classList.add('opened');
       letterContent.classList.remove('hidden');
-
-      // Forzar reflow para que la transicion funcione
       void letterContent.offsetWidth;
       letterContent.classList.add('visible');
-
-      // Mostrar boton de musica
       musicToggle.classList.remove('hidden');
-
-      // Mostrar pajaros
       birdsContainer.classList.remove('hidden');
       launchBirds();
-
-      // Iniciar musica de fondo
       startMusic();
-
-      // Iniciar animaciones de scroll
       initScrollAnimations();
-
-      // Iniciar cuenta atras
       startCountdown();
-
-      // Permitir scroll
       document.body.style.overflow = 'auto';
-    }, 1800);
+    }, 6000);
   }
 
   // Evento click en la pantalla del sobre
@@ -170,14 +195,31 @@
         });
       },
       {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.05,
+        rootMargin: '0px 0px -30px 0px'
       }
     );
 
     sections.forEach(function (section) {
       observer.observe(section);
     });
+
+    // Animar la linea del timeline cuando entra en vista
+    var timelineSection = document.querySelector('.section-timeline');
+    if (timelineSection) {
+      var tlObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              timelineSection.classList.add('line-visible');
+              tlObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      tlObserver.observe(timelineSection);
+    }
   }
 
   // ============================================
@@ -185,48 +227,32 @@
   // ============================================
   var birdInterval = null;
 
-  // Paletas de colores de loros
-  var parrotPalettes = [
-    // Guacamayo rojo
-    { body: '#E03030', wing1: '#2266CC', wing2: '#1A8FE0', tail: '#E03030', belly: '#EECC33' },
-    // Guacamayo azul y amarillo
-    { body: '#1A7FD4', wing1: '#1565B0', wing2: '#0D47A1', tail: '#1A7FD4', belly: '#FFD740' },
-    // Loro verde tropical
-    { body: '#2E9E3E', wing1: '#1B7A28', wing2: '#43B853', tail: '#2E9E3E', belly: '#A8E06A' },
-    // Guacamayo escarlata
-    { body: '#D42A2A', wing1: '#F5B800', wing2: '#FF8F00', tail: '#2266CC', belly: '#FF6659' },
-    // Cotorra turquesa
-    { body: '#00ACC1', wing1: '#00838F', wing2: '#26C6DA', tail: '#00838F', belly: '#B2EBF2' },
-    // Loro arcoiris (lori)
-    { body: '#43A047', wing1: '#E53935', wing2: '#FB8C00', tail: '#1E88E5', belly: '#FDD835' },
-  ];
-
-  function createParrotSVG(palette) {
-    // SVG de un loro en vuelo visto desde abajo/lado
-    return '<svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg">' +
-      // Ala izquierda
-      '<g class="wing">' +
-        '<path d="M22 20 Q12 8 2 12 Q8 16 14 18 Z" fill="' + palette.wing1 + '"/>' +
-        '<path d="M18 19 Q10 12 4 14 Q10 17 15 18 Z" fill="' + palette.wing2 + '" opacity="0.7"/>' +
+  // Mariposas blancas con detalles dorados
+  function createButterflySVG() {
+    var palettes = [
+      { wing: '#FFFFFF', inner: '#F5EFE0', vein: 'rgba(180,165,130,0.4)', body: '#C9A84C', dot: 'rgba(201,168,76,0.5)' },
+      { wing: '#FFF8F0', inner: '#F0E8D8', vein: 'rgba(170,155,120,0.35)', body: '#D4B96A', dot: 'rgba(201,168,76,0.45)' },
+      { wing: '#FFFDF8', inner: '#F2EBE0', vein: 'rgba(175,160,125,0.38)', body: '#C9A84C', dot: 'rgba(201,168,76,0.55)' },
+    ];
+    var c = palettes[Math.floor(Math.random() * palettes.length)];
+    return '<svg viewBox="0 0 60 48" xmlns="http://www.w3.org/2000/svg">' +
+      '<g class="wing" transform-origin="30 24">' +
+        '<path d="M30 24 Q18 4 6 10 Q2 18 8 26 Q14 32 30 28 Z" fill="' + c.wing + '" stroke="' + c.vein + '" stroke-width="0.5"/>' +
+        '<path d="M30 26 Q20 20 12 28 Q16 34 30 30 Z" fill="' + c.inner + '" stroke="' + c.vein + '" stroke-width="0.3"/>' +
+        '<circle cx="14" cy="16" r="2.5" fill="' + c.dot + '"/>' +
+        '<circle cx="18" cy="26" r="1.5" fill="' + c.dot + '"/>' +
       '</g>' +
-      // Ala derecha
-      '<g class="wing-right">' +
-        '<path d="M28 20 Q38 8 48 12 Q42 16 36 18 Z" fill="' + palette.wing1 + '"/>' +
-        '<path d="M32 19 Q40 12 46 14 Q40 17 35 18 Z" fill="' + palette.wing2 + '" opacity="0.7"/>' +
+      '<g class="wing-right" transform-origin="30 24">' +
+        '<path d="M30 24 Q42 4 54 10 Q58 18 52 26 Q46 32 30 28 Z" fill="' + c.wing + '" stroke="' + c.vein + '" stroke-width="0.5"/>' +
+        '<path d="M30 26 Q40 20 48 28 Q44 34 30 30 Z" fill="' + c.inner + '" stroke="' + c.vein + '" stroke-width="0.3"/>' +
+        '<circle cx="46" cy="16" r="2.5" fill="' + c.dot + '"/>' +
+        '<circle cx="42" cy="26" r="1.5" fill="' + c.dot + '"/>' +
       '</g>' +
-      // Cuerpo
-      '<ellipse cx="25" cy="22" rx="7" ry="5" fill="' + palette.body + '"/>' +
-      // Barriga
-      '<ellipse cx="25" cy="23" rx="4.5" ry="3" fill="' + palette.belly + '" opacity="0.6"/>' +
-      // Cabeza
-      '<circle cx="25" cy="16" r="4" fill="' + palette.body + '"/>' +
-      // Ojo
-      '<circle cx="24" cy="15.5" r="1" fill="white"/>' +
-      '<circle cx="24" cy="15.5" r="0.5" fill="#222"/>' +
-      // Pico
-      '<path d="M21 16 L19 17.5 L21.5 17 Z" fill="#333"/>' +
-      // Cola
-      '<path d="M23 27 Q22 35 20 38 L25 28 L30 38 Q28 35 27 27 Z" fill="' + palette.tail + '" opacity="0.85"/>' +
+      '<ellipse cx="30" cy="24" rx="1.5" ry="7" fill="' + c.body + '"/>' +
+      '<path d="M29 17 Q26 10 23 8" fill="none" stroke="' + c.body + '" stroke-width="0.7" stroke-linecap="round"/>' +
+      '<path d="M31 17 Q34 10 37 8" fill="none" stroke="' + c.body + '" stroke-width="0.7" stroke-linecap="round"/>' +
+      '<circle cx="23" cy="8" r="1" fill="' + c.body + '"/>' +
+      '<circle cx="37" cy="8" r="1" fill="' + c.body + '"/>' +
     '</svg>';
   }
 
@@ -239,10 +265,9 @@
 
     var size = sizes[Math.floor(Math.random() * sizes.length)];
     var anim = animations[Math.floor(Math.random() * animations.length)];
-    var palette = parrotPalettes[Math.floor(Math.random() * parrotPalettes.length)];
 
     bird.className = 'bird ' + size;
-    bird.innerHTML = createParrotSVG(palette);
+    bird.innerHTML = createButterflySVG();
 
     // Posicion vertical aleatoria (tercio superior de la pantalla)
     var startY = Math.random() * 40 + 5;
@@ -278,29 +303,32 @@
   }
 
   function launchBirds() {
-    // Oleada inicial: varios pajaros juntos
-    for (var i = 0; i < 5; i++) {
+    // Oleada inicial: varias mariposas juntas
+    for (var i = 0; i < 8; i++) {
       (function(delay) {
         setTimeout(createBird, delay);
-      })(i * 300 + Math.random() * 400);
+      })(i * 250 + Math.random() * 300);
     }
 
-    // Pajaros periodicos (cada 2-4 segundos)
+    // Mariposas periodicas (cada 1.5-3 segundos)
     birdInterval = setInterval(function () {
       createBird();
-      // A veces lanzar un par juntos
-      if (Math.random() > 0.5) {
-        setTimeout(createBird, 200 + Math.random() * 500);
+      // A veces lanzar 2-3 juntas
+      if (Math.random() > 0.4) {
+        setTimeout(createBird, 150 + Math.random() * 400);
       }
-    }, 2000 + Math.random() * 2000);
+      if (Math.random() > 0.7) {
+        setTimeout(createBird, 400 + Math.random() * 500);
+      }
+    }, 1500 + Math.random() * 1500);
 
-    // Parar de generar nuevos pajaros tras 30s (los que estan volando terminan)
+    // Parar de generar nuevas mariposas tras 45s
     setTimeout(function () {
       if (birdInterval) {
         clearInterval(birdInterval);
         birdInterval = null;
       }
-    }, 30000);
+    }, 45000);
   }
 
   // ============================================
@@ -347,18 +375,75 @@
   }
 
   // Mostrar/ocultar campos segun asistencia
+  var rsvpNoFields = document.getElementById('rsvp-no-fields');
+
   function toggleAttendFields() {
+    var noNombre = document.getElementById('rsvp-no-nombre');
+    var noApellidos = document.getElementById('rsvp-no-apellidos');
+
+    var siNombre = document.getElementById('rsvp-nombre');
+    var siApellidos = document.getElementById('rsvp-apellidos');
+    var siEmail = document.getElementById('rsvp-email');
+
     if (attendYes && attendYes.checked) {
+      // Mostrar campos completos y habilitarlos
       rsvpFields.classList.remove('hidden');
-      // Hacer campos required
-      document.getElementById('rsvp-nombre').required = true;
-      document.getElementById('rsvp-apellidos').required = true;
-      document.getElementById('rsvp-email').required = true;
+      siNombre.required = true;
+      siApellidos.required = true;
+      siEmail.required = true;
+      siNombre.disabled = false;
+      siApellidos.disabled = false;
+      siEmail.disabled = false;
+
+      // Ocultar y deshabilitar campos de "no asiste"
+      if (rsvpNoFields) {
+        rsvpNoFields.classList.add('hidden');
+        noNombre.required = false;
+        noApellidos.required = false;
+        noNombre.disabled = true;
+        noApellidos.disabled = true;
+      }
+
+      // Mostrar aviso de hotel si hotel-yes esta seleccionado
+      toggleHotelNotice();
+    } else if (attendNo && attendNo.checked) {
+      // Ocultar y deshabilitar campos completos
+      rsvpFields.classList.add('hidden');
+      siNombre.required = false;
+      siApellidos.required = false;
+      siEmail.required = false;
+      siNombre.disabled = true;
+      siApellidos.disabled = true;
+      siEmail.disabled = true;
+
+      // Mostrar y habilitar campos de "no asiste"
+      if (rsvpNoFields) {
+        rsvpNoFields.classList.remove('hidden');
+        noNombre.required = true;
+        noApellidos.required = true;
+        noNombre.disabled = false;
+        noApellidos.disabled = false;
+      }
+
+      // Ocultar aviso de hotel
+      var hotelNotice = document.getElementById('hotel-notice');
+      if (hotelNotice) hotelNotice.classList.add('hidden');
     } else {
       rsvpFields.classList.add('hidden');
-      document.getElementById('rsvp-nombre').required = false;
-      document.getElementById('rsvp-apellidos').required = false;
-      document.getElementById('rsvp-email').required = false;
+      siNombre.required = false;
+      siApellidos.required = false;
+      siEmail.required = false;
+      siNombre.disabled = true;
+      siApellidos.disabled = true;
+      siEmail.disabled = true;
+
+      if (rsvpNoFields) {
+        rsvpNoFields.classList.add('hidden');
+        noNombre.required = false;
+        noApellidos.required = false;
+        noNombre.disabled = true;
+        noApellidos.disabled = true;
+      }
     }
   }
 
@@ -395,6 +480,23 @@
 
   if (kidsYes) kidsYes.addEventListener('change', toggleKids);
   if (kidsNo) kidsNo.addEventListener('change', toggleKids);
+
+  // Mostrar/ocultar aviso DNI/Pasaporte segun alojamiento
+  var hotelYes = document.getElementById('hotel-yes');
+  var hotelNo = document.getElementById('hotel-no');
+
+  function toggleHotelNotice() {
+    var hotelNotice = document.getElementById('hotel-notice');
+    if (!hotelNotice) return;
+    if (hotelYes && hotelYes.checked && !rsvpFields.classList.contains('hidden')) {
+      hotelNotice.classList.remove('hidden');
+    } else {
+      hotelNotice.classList.add('hidden');
+    }
+  }
+
+  if (hotelYes) hotelYes.addEventListener('change', toggleHotelNotice);
+  if (hotelNo) hotelNo.addEventListener('change', toggleHotelNotice);
 
   // Enviar formulario
   // FormSubmit requiere activacion del email la primera vez.
@@ -484,123 +586,4 @@
     });
   });
 
-  // ============================================
-  // GENERADOR DE QR
-  // ============================================
-  // URL del album compartido (cambiar por la real)
-  var ALBUM_URL = 'https://photos.app.goo.gl/ALBUM_ID_AQUI';
-
-  function generateQR() {
-    var canvas = document.getElementById('qr-canvas');
-    if (!canvas) return;
-
-    var size = 180;
-    canvas.width = size;
-    canvas.height = size;
-    var ctx = canvas.getContext('2d');
-
-    // Generar modulos QR con la libreria inline
-    var modules = encodeQR(ALBUM_URL);
-    var moduleCount = modules.length;
-    var cellSize = size / moduleCount;
-
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, size, size);
-
-    ctx.fillStyle = '#2C2C2C';
-    for (var row = 0; row < moduleCount; row++) {
-      for (var col = 0; col < moduleCount; col++) {
-        if (modules[row][col]) {
-          ctx.fillRect(
-            Math.round(col * cellSize),
-            Math.round(row * cellSize),
-            Math.ceil(cellSize),
-            Math.ceil(cellSize)
-          );
-        }
-      }
-    }
-  }
-
-  // Mini codificador QR (Version 2, Mode Byte, EC Level L)
-  // Genera un QR funcional para URLs cortas
-  function encodeQR(text) {
-    var size = 25; // Version 2 = 25x25
-    var grid = [];
-    for (var i = 0; i < size; i++) {
-      grid[i] = [];
-      for (var j = 0; j < size; j++) {
-        grid[i][j] = false;
-      }
-    }
-
-    // Patrones de posicion (finder patterns)
-    function drawFinder(r, c) {
-      for (var dr = -3; dr <= 3; dr++) {
-        for (var dc = -3; dc <= 3; dc++) {
-          var rr = r + dr, cc = c + dc;
-          if (rr >= 0 && rr < size && cc >= 0 && cc < size) {
-            var outer = Math.max(Math.abs(dr), Math.abs(dc));
-            grid[rr][cc] = outer !== 2;
-          }
-        }
-      }
-    }
-
-    drawFinder(3, 3);
-    drawFinder(3, size - 4);
-    drawFinder(size - 4, 3);
-
-    // Patron de alineacion (version 2: posicion 16)
-    var ar = 16, ac = 16;
-    for (var dr = -2; dr <= 2; dr++) {
-      for (var dc = -2; dc <= 2; dc++) {
-        var outer = Math.max(Math.abs(dr), Math.abs(dc));
-        grid[ar + dr][ac + dc] = outer !== 1;
-      }
-    }
-
-    // Lineas de timing
-    for (var k = 8; k < size - 8; k++) {
-      grid[6][k] = k % 2 === 0;
-      grid[k][6] = k % 2 === 0;
-    }
-
-    // Dark module
-    grid[size - 8][8] = true;
-
-    // Rellenar datos como patron pseudoaleatorio basado en el texto
-    var hash = 0;
-    for (var i = 0; i < text.length; i++) {
-      hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
-    }
-
-    for (var r = 0; r < size; r++) {
-      for (var c = 0; c < size; c++) {
-        // No sobreescribir patrones funcionales
-        if (isReserved(r, c, size)) continue;
-        // Patron basado en hash para simular datos
-        var seed = (r * 31 + c * 17 + hash) & 0xFFFF;
-        grid[r][c] = (seed % 3) === 0;
-      }
-    }
-
-    return grid;
-  }
-
-  function isReserved(r, c, size) {
-    // Finder patterns + separadores
-    if (r <= 8 && c <= 8) return true;
-    if (r <= 8 && c >= size - 8) return true;
-    if (r >= size - 8 && c <= 8) return true;
-    // Timing
-    if (r === 6 || c === 6) return true;
-    // Alignment
-    if (Math.abs(r - 16) <= 2 && Math.abs(c - 16) <= 2) return true;
-    // Format info
-    if (r === 8 || c === 8) return true;
-    return false;
-  }
-
-  generateQR();
 })();
