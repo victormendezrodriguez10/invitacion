@@ -28,8 +28,15 @@
     if (isOpened) return;
     isOpened = true;
 
-    // Iniciar musica inmediatamente (dentro del gesto del usuario)
-    startMusic();
+    // Iniciar musica directamente en el gesto del usuario
+    bgMusic.volume = 0.4;
+    bgMusic.play().then(function () {
+      isMusicPlaying = true;
+      musicToggle.classList.remove('paused');
+    }).catch(function () {
+      isMusicPlaying = false;
+      musicToggle.classList.add('paused');
+    });
 
     // Fase 1: Sello se rompe + solapa se abre + carta sale
     envelope.classList.add('opening');
