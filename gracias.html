@@ -224,6 +224,11 @@
       50% { opacity: 0.8; }
     }
 
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
     /* Boton musica */
     .music-toggle {
       position: fixed;
@@ -262,6 +267,16 @@
   </style>
 </head>
 <body>
+
+  <!-- Overlay para activar musica -->
+  <div id="tap-overlay" style="position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);cursor:pointer">
+    <div style="text-align:center;color:white;animation:fadeInUp 0.8s ease both">
+      <div style="width:70px;height:70px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;animation:pulse 2s ease-in-out infinite">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+      </div>
+      <p style="font-family:'Montserrat',sans-serif;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.8">Toca para continuar</p>
+    </div>
+  </div>
 
   <!-- Foto de fondo -->
   <div class="bg-photo">
@@ -318,24 +333,18 @@
     var playing = false;
 
     music.volume = 0.5;
-    var p = music.play();
-    if (p !== undefined) {
-      p.then(function () { playing = true; })
-       .catch(function () {
-          musicBtn.classList.add('paused');
-          // Intentar reproducir al primer toque en la pantalla
-          function playOnTouch() {
-            music.play().then(function () {
-              playing = true;
-              musicBtn.classList.remove('paused');
-            });
-            document.removeEventListener('click', playOnTouch);
-            document.removeEventListener('touchstart', playOnTouch);
-          }
-          document.addEventListener('click', playOnTouch);
-          document.addEventListener('touchstart', playOnTouch);
-       });
-    }
+
+    // Activar musica al tocar el overlay
+    var overlay = document.getElementById('tap-overlay');
+    overlay.addEventListener('click', function () {
+      music.play().then(function () {
+        playing = true;
+        musicBtn.classList.remove('paused');
+      });
+      overlay.style.transition = 'opacity 0.5s ease';
+      overlay.style.opacity = '0';
+      setTimeout(function () { overlay.remove(); }, 500);
+    });
 
     musicBtn.addEventListener('click', function () {
       if (playing) {
