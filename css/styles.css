@@ -811,30 +811,24 @@ body {
 /* Indicador de scroll */
 .hero-scroll-hint {
   position: absolute;
-  bottom: 1.8rem;
+  bottom: 1.2rem;
   left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  color: white;
+  gap: 0.2rem;
+  color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 400;
+  font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(6px);
-  padding: 0.6rem 1.5rem 0.6rem calc(1.5rem + 0.15em);
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
   animation: scrollBounce 2s ease-in-out infinite;
 }
 
 @keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.85; }
-  50% { transform: translateX(-50%) translateY(8px); opacity: 1; }
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+  50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
 }
 
 /* ============================================
@@ -1332,6 +1326,9 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 0.6rem;
   margin-bottom: 1.5rem;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hotel-photo {
