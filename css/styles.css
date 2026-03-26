@@ -813,7 +813,6 @@ body {
   position: absolute;
   bottom: 1.8rem;
   left: 50%;
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -822,12 +821,12 @@ body {
   font-family: var(--font-sans);
   font-size: 0.95rem;
   font-weight: 400;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(6px);
-  padding: 0.6rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.6rem calc(1.5rem + 0.15em);
   border-radius: 50px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   animation: scrollBounce 2s ease-in-out infinite;
@@ -1330,7 +1329,7 @@ body {
 /* Galeria del hotel */
 .hotel-gallery {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.6rem;
   margin-bottom: 1.5rem;
 }
