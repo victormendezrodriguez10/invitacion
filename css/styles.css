@@ -811,24 +811,31 @@ body {
 /* Indicador de scroll */
 .hero-scroll-hint {
   position: absolute;
-  bottom: 1.2rem;
+  bottom: 1.8rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
-  color: rgba(255, 255, 255, 0.7);
+  gap: 0.4rem;
+  color: white;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   animation: scrollBounce 2s ease-in-out infinite;
 }
 
 @keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
-  50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.85; }
+  50% { transform: translateX(-50%) translateY(8px); opacity: 1; }
 }
 
 /* ============================================
@@ -1465,7 +1472,7 @@ body {
 .gallery-mosaic {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 140px;
+  grid-auto-rows: calc((50vw - 2.4rem) / 1);
   grid-auto-flow: dense;
   gap: 0.7rem;
   margin-top: 1.5rem;
@@ -1503,6 +1510,7 @@ body {
 
 .gi-wide {
   grid-column: span 2;
+  grid-row: span 2;
   border-radius: 20px;
 }
 
@@ -2266,7 +2274,7 @@ body {
   }
 
   .gallery-mosaic {
-    grid-auto-rows: 170px;
+    grid-auto-rows: calc((50vw - 2.7rem) / 1);
   }
 
   .countdown-number {
@@ -2326,5 +2334,9 @@ body {
 
   .venue-map {
     height: 350px;
+  }
+
+  .gallery-mosaic {
+    grid-auto-rows: 260px;
   }
 }
