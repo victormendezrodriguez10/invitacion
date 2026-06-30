@@ -278,8 +278,8 @@
     bird.className = 'bird ' + size;
     bird.innerHTML = createButterflySVG();
 
-    // Posicion vertical aleatoria (tercio superior de la pantalla)
-    var startY = Math.random() * 40 + 5;
+    // Posicion vertical aleatoria (toda la altura de la pantalla)
+    var startY = Math.random() * 90 + 3;
     bird.style.top = startY + '%';
     bird.style.left = '0';
 
