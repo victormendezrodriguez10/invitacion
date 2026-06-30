@@ -1471,40 +1471,6 @@ body {
   border-color: var(--gold);
 }
 
-.gastro-features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.7rem 0.9rem;
-  margin-top: 1.6rem;
-}
-
-.gastro-feature {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gastro-feature span {
-  font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--gold-dark);
-  text-align: center;
-  padding: 0.5rem 1.1rem;
-  border: 1px solid rgba(201, 168, 76, 0.4);
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(245, 230, 204, 0.4), rgba(255, 248, 240, 0.25));
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-.gastro-feature span:hover {
-  background: linear-gradient(180deg, rgba(245, 230, 204, 0.7), rgba(255, 248, 240, 0.4));
-  box-shadow: 0 3px 14px rgba(201, 168, 76, 0.18);
-}
-
 .gastro-note {
   font-family: var(--font-serif);
   font-style: italic;
