@@ -331,13 +331,7 @@
       }
     }, 1500 + Math.random() * 1500);
 
-    // Parar de generar nuevas mariposas tras 45s
-    setTimeout(function () {
-      if (birdInterval) {
-        clearInterval(birdInterval);
-        birdInterval = null;
-      }
-    }, 45000);
+    // Las mariposas se generan de forma continua (sin limite de tiempo)
   }
 
   // ============================================
