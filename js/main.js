@@ -649,6 +649,24 @@
   }
 
   // ============================================
+  // COMPARTIR INVITACION
+  // ============================================
+  var shareBtn = document.getElementById('share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function () {
+      var url = 'https://noscasamosvictoryleticia.com/';
+      var text = '¡Nos casamos! Víctor & Leticia · 29 de mayo de 2027 · Toda la información y la confirmación de asistencia aquí: ' + url;
+
+      if (navigator.share) {
+        navigator.share({ title: 'Víctor & Leticia - Nos casamos', text: text, url: url }).catch(function () {});
+      } else {
+        // Sin menu nativo (ordenador): abrir WhatsApp con el texto listo
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+      }
+    });
+  }
+
+  // ============================================
   // ACORDEON (FAQ + REGALOS)
   // ============================================
   var accordionHeaders = document.querySelectorAll('.accordion-header');
