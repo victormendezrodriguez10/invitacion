@@ -38,13 +38,48 @@
       musicToggle.classList.add('paused');
     });
 
-    // Fase 1: Sello se rompe + solapa se abre + carta sale
+    var reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Fase final: mostrar el contenido de la invitacion
+    function revealContent() {
+      envelopeScreen.classList.add('opened');
+      if (letterContent.classList.contains('hidden')) {
+        letterContent.classList.remove('hidden');
+        void letterContent.offsetWidth;
+      }
+      letterContent.classList.add('visible');
+      musicToggle.classList.remove('hidden');
+      birdsContainer.classList.remove('hidden');
+      launchBirds();
+      initScrollAnimations();
+      startCountdown();
+      document.body.style.overflow = 'auto';
+    }
+
+    // Con "reducir movimiento": fundido corto y directo al contenido
+    if (reduceMotion) {
+      envelopeScreen.style.transition = 'opacity 0.4s ease';
+      envelopeScreen.style.opacity = '0';
+      setTimeout(revealContent, 400);
+      return;
+    }
+
+    // Fase 1 (0 - 2.7s): el sello se agrieta y se parte, la solapa se
+    // levanta en 3D y la carta sale del sobre con un ligero rebote (CSS)
     envelope.classList.add('opening');
 
-    // Fase 2: Capturar posicion de la carta y moverla al centro
+    var letter = document.getElementById('envelope-letter');
+    var baseScale = 2;
+
+    // Fase 2 (2.8s): fijar la carta en pantalla y llevarla al centro
     setTimeout(function () {
-      var letter = document.getElementById('envelope-letter');
       var rect = letter.getBoundingClientRect();
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+
+      // Escala que quepa en pantalla (movil incluido)
+      baseScale = Math.min(2.2, (vw * 0.86) / rect.width, (vh * 0.62) / rect.height);
 
       // Fijar la carta en su posicion actual exacta (sin salto visual)
       letter.style.animation = 'none';
@@ -56,43 +91,45 @@
       letter.style.transform = 'none';
       letter.style.zIndex = '2000';
       letter.style.opacity = '1';
+      letter.style.boxShadow = '0 12px 32px rgba(0,0,0,0.18)';
       envelopeScreen.appendChild(letter);
 
-      // Desvanecer el sobre
-      envelope.style.transition = 'opacity 1s ease';
+      // El sobre se desvanece por detras
+      envelope.style.transition = 'opacity 0.9s ease';
       envelope.style.opacity = '0';
 
       // Reflow para que el navegador registre la posicion inicial
       void letter.offsetWidth;
 
       // Animar al centro manteniendo la misma forma
-      letter.style.transition = 'all 1.5s cubic-bezier(0.4, 0, 0.2, 1)';
+      letter.style.transition = 'top 1.2s cubic-bezier(0.4, 0, 0.2, 1), ' +
+        'left 1.2s cubic-bezier(0.4, 0, 0.2, 1), ' +
+        'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), ' +
+        'border-radius 1.2s ease, box-shadow 1.2s ease, opacity 0.9s ease';
       letter.style.top = '50%';
       letter.style.left = '50%';
-      letter.style.transform = 'translate(-50%, -50%) scale(2)';
+      letter.style.transform = 'translate(-50%, -50%) scale(' + baseScale + ')';
       letter.style.borderRadius = '8px';
-      letter.style.boxShadow = '0 20px 50px rgba(0,0,0,0.12)';
-    }, 3500);
+      letter.style.boxShadow = '0 24px 60px rgba(0,0,0,0.16)';
+    }, 2800);
 
-    // Fase 3: Desvanecer todo
+    // Fase 3 (3.8s): la carta sigue creciendo y se funde con la invitacion,
+    // que aparece por debajo (fundido cruzado, sin pantalla en blanco)
     setTimeout(function () {
-      envelopeScreen.style.transition = 'opacity 0.8s ease';
-      envelopeScreen.style.opacity = '0';
-    }, 5200);
-
-    // Fase 4: Mostrar contenido
-    setTimeout(function () {
-      envelopeScreen.classList.add('opened');
       letterContent.classList.remove('hidden');
       void letterContent.offsetWidth;
       letterContent.classList.add('visible');
-      musicToggle.classList.remove('hidden');
-      birdsContainer.classList.remove('hidden');
-      launchBirds();
-      initScrollAnimations();
-      startCountdown();
-      document.body.style.overflow = 'auto';
-    }, 6000);
+
+      letter.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.6, 1), opacity 0.7s ease 0.1s';
+      letter.style.transform = 'translate(-50%, -50%) scale(' + (baseScale * 1.35) + ')';
+      letter.style.opacity = '0';
+
+      envelopeScreen.style.transition = 'opacity 0.8s ease 0.1s';
+      envelopeScreen.style.opacity = '0';
+    }, 3800);
+
+    // Fase 4 (4.7s): activar la pagina
+    setTimeout(revealContent, 4700);
   }
 
   // Evento click en la pantalla del sobre

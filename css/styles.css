@@ -98,6 +98,20 @@ body {
   transform: rotateX(1deg) rotateY(0deg) scale(1.03) translateY(-6px);
 }
 
+/* Al abrir, el sobre se recuesta ligeramente para dar profundidad */
+.envelope.opening,
+.envelope.opening:hover {
+  transform: rotateX(7deg) rotateY(0deg) translateY(6px);
+  transition: transform 1.6s ease;
+}
+
+.envelope.opening .envelope-shadow {
+  bottom: -20px;
+  opacity: 0.6;
+  filter: blur(10px);
+  transition: all 1.6s ease;
+}
+
 /* Sombra proyectada en la "mesa" */
 .envelope-shadow {
   position: absolute;
@@ -121,19 +135,25 @@ body {
 /* Interior del sobre (se ve al abrir la solapa) */
 .envelope-interior {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 55%;
+  inset: 0;
   background: linear-gradient(180deg, #BF9960 0%, #C8A470 50%, #D4AD78 100%);
-  clip-path: polygon(0 30%, 50% 0%, 100% 30%, 100% 100%, 0 100%);
+  border-radius: 4px;
   z-index: 1;
-  opacity: 0;
-  transition: opacity 0.3s ease 0.2s;
 }
 
-.envelope.opening .envelope-interior {
+/* Sombra interior: oscurece el hueco del sobre hasta que la solapa se levanta */
+.envelope-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: linear-gradient(180deg, rgba(60, 40, 10, 0.5) 0%, rgba(60, 40, 10, 0.22) 28%, transparent 55%);
+  pointer-events: none;
   opacity: 1;
+  transition: opacity 1.2s ease 0.55s;
+}
+
+.envelope.opening .envelope-shade {
+  opacity: 0;
 }
 
 .envelope-interior-pattern {
@@ -147,7 +167,6 @@ body {
       rgba(201, 168, 76, 0.08) 8px,
       rgba(201, 168, 76, 0.08) 9px
     );
-  clip-path: polygon(0 30%, 50% 0%, 100% 30%, 100% 100%, 0 100%);
 }
 
 /* Cuerpo del sobre (parte frontal) */
@@ -159,6 +178,7 @@ body {
   border-radius: 4px;
   z-index: 5;
   overflow: hidden;
+  clip-path: polygon(0 0, 50% 42%, 100% 0, 100% 100%, 0 100%);
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -308,13 +328,28 @@ body {
   left: 0;
   width: 100%;
   height: 60%;
-  background: linear-gradient(180deg, #D8C89E 0%, #D0C096 30%, #C8B68E 60%, #C0AE86 100%);
-  clip-path: polygon(0 0, 50% 75%, 100% 0);
   z-index: 10;
   transform-origin: top center;
   transform: rotateX(0deg);
-  transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1),
-              z-index 0s linear 0.8s;
+  /* Sin fondo ni clip-path aqui: asi el navegador mantiene el 3D real
+     y el forro (flap-liner) se ve al girar la solapa */
+  transform-style: preserve-3d;
+  transition: transform 1.4s cubic-bezier(0.33, 1, 0.68, 1) 0.35s,
+              z-index 0s linear 1s;
+}
+
+/* Cara frontal de la solapa */
+.flap-front {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #D8C89E 0%, #D0C096 30%, #C8B68E 60%, #C0AE86 100%);
+  clip-path: polygon(0 0, 50% 75%, 100% 0);
+  backface-visibility: hidden;
+}
+
+.envelope-flap-top > .paper-texture {
+  clip-path: polygon(0 0, 50% 75%, 100% 0);
+  backface-visibility: hidden;
 }
 
 /* Forro interior de la solapa (se ve al girar) */
@@ -323,7 +358,8 @@ body {
   inset: 0;
   background: linear-gradient(180deg, #BF9960 0%, #C8A470 50%, #B89058 100%);
   clip-path: polygon(0 0, 50% 75%, 100% 0);
-  transform: rotateX(180deg);
+  /* Girado sobre el eje vertical: queda de espaldas sin cambiar la forma */
+  transform: rotateY(180deg);
   backface-visibility: hidden;
 }
 
@@ -339,12 +375,13 @@ body {
     linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 20%),
     linear-gradient(180deg, transparent 90%, rgba(0,0,0,0.06) 100%);
   clip-path: polygon(0 0, 50% 75%, 100% 0);
+  backface-visibility: hidden;
   pointer-events: none;
 }
 
 /* Animacion de apertura de la solapa */
 .envelope.opening .envelope-flap-top {
-  transform: rotateX(-180deg);
+  transform: rotateX(-168deg);
   z-index: 0;
 }
 
@@ -363,7 +400,8 @@ body {
     0 1px 3px rgba(0,0,0,0.08),
     0 0 0 0.5px rgba(0,0,0,0.05);
   overflow: hidden;
-  opacity: 0;
+  opacity: 1;
+  will-change: transform;
 }
 
 .letter-inner {
@@ -434,22 +472,22 @@ body {
 
 /* La carta sale del sobre */
 .envelope.opening .envelope-letter {
-  z-index: 12;
-  animation: letterSlideOut 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards;
+  animation: letterSlideOut 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.3s forwards;
 }
 
 @keyframes letterSlideOut {
   0% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) rotate(0deg);
   }
-  12% {
-    opacity: 1;
+  55% {
+    transform: translateX(-50%) translateY(-124%) rotate(-1.5deg);
+  }
+  78% {
+    transform: translateX(-50%) translateY(-110%) rotate(0.8deg);
   }
   100% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-115%);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    transform: translateX(-50%) translateY(-115%) rotate(0deg);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
   }
 }
 
@@ -486,6 +524,35 @@ body {
   width: 60px;
   height: 60px;
   z-index: 11;
+}
+
+/* Sombra proyectada y halo pulsante (detras de las mitades) */
+.wax-seal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: sealPulse 2.5s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+
+.seal-half {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+.seal-half-l {
+  clip-path: polygon(-30% -30%, 52% -30%, 46% 20%, 55% 38%, 47% 55%, 54% 72%, 49% 130%, -30% 130%);
+}
+
+.seal-half-r {
+  clip-path: polygon(52% -30%, 130% -30%, 130% 130%, 49% 130%, 54% 72%, 47% 55%, 55% 38%, 46% 20%);
+}
+
+.seal-face {
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -494,12 +561,30 @@ body {
   background:
     radial-gradient(circle at 35% 30%, #DCCA7C 0%, #D4B96A 25%, #C9A84C 50%, #A8893A 75%, #8B7530 100%);
   box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.35),
-    0 1px 3px rgba(0, 0, 0, 0.2),
     inset 0 2px 4px rgba(255, 230, 160, 0.3),
     inset 0 -3px 6px rgba(100, 75, 30, 0.35);
-  animation: sealPulse 2.5s ease-in-out infinite;
-  transition: opacity 1s ease, transform 1s ease;
+}
+
+/* Grieta que se dibuja justo antes de partirse */
+.seal-crack {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: rgba(60, 40, 10, 0.75);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.seal-crack path {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
 }
 
 /* Anillo exterior del sello (borde en relieve) */
@@ -600,9 +685,47 @@ body {
   z-index: 1;
 }
 
-.envelope.opening .wax-seal {
+/* Secuencia de rotura del sello */
+.envelope.opening .wax-seal::before {
   opacity: 0;
-  transform: translateX(-50%) scale(0.5);
+  animation: none;
+}
+
+.envelope.opening .seal-crack {
+  opacity: 1;
+  animation: crackFade 0.35s ease 0.4s forwards;
+}
+
+.envelope.opening .seal-crack path {
+  animation: crackDraw 0.28s ease-out forwards;
+}
+
+.envelope.opening .seal-half-l {
+  animation: sealBreakL 0.75s cubic-bezier(0.4, 0, 0.7, 1) 0.3s forwards;
+}
+
+.envelope.opening .seal-half-r {
+  animation: sealBreakR 0.8s cubic-bezier(0.4, 0, 0.7, 1) 0.3s forwards;
+}
+
+@keyframes crackDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes crackFade {
+  to { opacity: 0; }
+}
+
+@keyframes sealBreakL {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  25%  { transform: translate(-4px, -3px) rotate(-6deg); opacity: 1; }
+  100% { transform: translate(-30px, 42px) rotate(-38deg); opacity: 0; }
+}
+
+@keyframes sealBreakR {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  25%  { transform: translate(4px, -2px) rotate(7deg); opacity: 1; }
+  100% { transform: translate(32px, 46px) rotate(42deg); opacity: 0; }
 }
 
 @keyframes sealPulse {
@@ -610,16 +733,12 @@ body {
     box-shadow:
       0 3px 8px rgba(0, 0, 0, 0.35),
       0 1px 3px rgba(0, 0, 0, 0.2),
-      inset 0 2px 4px rgba(255, 230, 160, 0.3),
-      inset 0 -3px 6px rgba(100, 75, 30, 0.35),
       0 0 0 0 rgba(201, 168, 76, 0);
   }
   50% {
     box-shadow:
       0 3px 8px rgba(0, 0, 0, 0.35),
       0 1px 3px rgba(0, 0, 0, 0.2),
-      inset 0 2px 4px rgba(255, 230, 160, 0.3),
-      inset 0 -3px 6px rgba(100, 75, 30, 0.35),
       0 0 15px 6px rgba(201, 168, 76, 0.25);
   }
 }
@@ -638,6 +757,31 @@ body {
 @keyframes tapFade {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
+}
+
+.envelope.opening + .tap-text {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Respeto a "reducir movimiento" del sistema */
+@media (prefers-reduced-motion: reduce) {
+  .wax-seal::before,
+  .tap-text,
+  .envelope.opening .envelope-letter,
+  .envelope.opening .seal-half-l,
+  .envelope.opening .seal-half-r,
+  .envelope.opening .seal-crack,
+  .envelope.opening .seal-crack path {
+    animation: none !important;
+  }
+  .envelope,
+  .envelope-shadow,
+  .envelope-flap-top,
+  .envelope-shade {
+    transition: none !important;
+  }
 }
 
 /* ============================================

@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260630-3">
+  <link rel="stylesheet" href="css/styles.css?v=20260907-1">
 </head>
 <body>
 
@@ -42,6 +42,9 @@
           </div>
         </div>
 
+        <!-- Sombra interior (se aclara al levantar la solapa) -->
+        <div class="envelope-shade"></div>
+
         <!-- Cuerpo del sobre (parte frontal inferior) -->
         <div class="envelope-body">
           <!-- Textura de fibras del papel -->
@@ -59,24 +62,48 @@
 
         <!-- Solapa superior (se abre con animacion) -->
         <div class="envelope-flap-top" id="envelope-flap">
+          <!-- Cara frontal de la solapa -->
+          <div class="flap-front"></div>
           <div class="paper-texture"></div>
           <!-- Forro interior de la solapa -->
           <div class="flap-liner"></div>
         </div>
 
-        <!-- Sello de lacre -->
+        <!-- Sello de lacre (dos mitades que se parten al abrir) -->
         <div class="wax-seal" id="wax-seal">
-          <div class="seal-outer-ring"></div>
-          <div class="seal-inner-ring"></div>
-          <div class="seal-drips">
-            <div class="drip drip-1"></div>
-            <div class="drip drip-2"></div>
-            <div class="drip drip-3"></div>
-            <div class="drip drip-4"></div>
-            <div class="drip drip-5"></div>
+          <div class="seal-half seal-half-l">
+          <div class="seal-face">
+            <div class="seal-outer-ring"></div>
+            <div class="seal-inner-ring"></div>
+            <div class="seal-drips">
+              <div class="drip drip-1"></div>
+              <div class="drip drip-2"></div>
+              <div class="drip drip-3"></div>
+              <div class="drip drip-4"></div>
+              <div class="drip drip-5"></div>
+            </div>
+            <span class="seal-text">V & L</span>
+            <div class="seal-shine"></div>
           </div>
-          <span class="seal-text">V & L</span>
-          <div class="seal-shine"></div>
+          </div>
+          <div class="seal-half seal-half-r">
+          <div class="seal-face">
+            <div class="seal-outer-ring"></div>
+            <div class="seal-inner-ring"></div>
+            <div class="seal-drips">
+              <div class="drip drip-1"></div>
+              <div class="drip drip-2"></div>
+              <div class="drip drip-3"></div>
+              <div class="drip drip-4"></div>
+              <div class="drip drip-5"></div>
+            </div>
+            <span class="seal-text">V & L</span>
+            <div class="seal-shine"></div>
+          </div>
+          </div>
+          <svg class="seal-crack" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M52 -12 L46 20 L55 38 L47 55 L54 72 L49 112" vector-effect="non-scaling-stroke"/>
+          </svg>
         </div>
       </div>
 
@@ -744,6 +771,6 @@ Víctor & Leticia">
     <source src="canon.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="js/main.js?v=20260630-3"></script>
+  <script src="js/main.js?v=20260907-1"></script>
 </body>
 </html>
