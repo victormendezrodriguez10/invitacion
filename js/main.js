@@ -434,6 +434,7 @@
       siNombre.disabled = false;
       siApellidos.disabled = false;
       siEmail.disabled = false;
+      setAttendExtras(true);
 
       // Ocultar y deshabilitar campos de "no asiste"
       if (rsvpNoFields) {
@@ -455,6 +456,7 @@
       siNombre.disabled = true;
       siApellidos.disabled = true;
       siEmail.disabled = true;
+      setAttendExtras(false);
 
       // Mostrar y habilitar campos de "no asiste"
       if (rsvpNoFields) {
@@ -476,6 +478,7 @@
       siNombre.disabled = true;
       siApellidos.disabled = true;
       siEmail.disabled = true;
+      setAttendExtras(false);
 
       if (rsvpNoFields) {
         rsvpNoFields.classList.add('hidden');
@@ -484,6 +487,25 @@
         noNombre.disabled = true;
         noApellidos.disabled = true;
       }
+    }
+  }
+
+  // Habilita/deshabilita el resto de campos de "si asiste" (acompanante,
+  // ninos, alojamiento, alergias, mensaje) para que NO se envien cuando el
+  // invitado marca "No podre asistir"
+  function setAttendExtras(enabled) {
+    if (!rsvpFields) return;
+    rsvpFields.querySelectorAll('input[type="radio"], textarea').forEach(function (el) {
+      el.disabled = !enabled;
+    });
+    if (enabled) {
+      toggleCompanion();
+      toggleKids();
+    } else {
+      var companionInput = document.getElementById('rsvp-companion-name');
+      var kidsSelect = document.getElementById('rsvp-kids-count');
+      if (companionInput) companionInput.disabled = true;
+      if (kidsSelect) kidsSelect.disabled = true;
     }
   }
 
