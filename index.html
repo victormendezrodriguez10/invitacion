@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260907-6">
+  <link rel="stylesheet" href="css/styles.css?v=20260907-7">
 </head>
 <body>
 
@@ -39,7 +39,7 @@
         <div class="envelope-letter" id="envelope-letter">
           <div class="letter-inner">
             <div class="letter-ornament-top">&#10053;</div>
-            <div class="letter-invite-text">&iexcl;Est&aacute;s invitado a nuestra boda!</div>
+            <div class="letter-invite-text">&iexcl;Os invitamos a nuestra boda!</div>
             <div class="letter-preview-text">Víctor & Leticia</div>
             <div class="letter-preview-date">29 &middot; 05 &middot; 2027</div>
             <div class="letter-ornament-bottom">&#10053;</div>
@@ -124,7 +124,7 @@
 
     <!-- Foto hero fullscreen -->
     <section class="section-hero" id="hero-section">
-      <img src="foto.jpg" alt="Víctor y Leticia" class="hero-photo">
+      <img src="fotos/image1.jpeg" alt="Víctor y Leticia" class="hero-photo">
       <div class="hero-overlay">
         <div class="hero-text fade-in-section">
           <p class="hero-names">Víctor & Leticia</p>
@@ -186,7 +186,7 @@
       </div>
       <p class="personal-message">
         Hemos decidido dar el paso.<br>
-        Y no queremos hacerlo sin ti.
+        Y no queremos hacerlo sin vosotros.
       </p>
       <div class="separator small">
         <span class="sep-line"></span>
@@ -260,9 +260,9 @@
       </div>
 
       <p class="gastro-intro">
-        Nos sentaremos a la mesa en uno de los templos gastronómicos del país.
         Tanto el <strong>cóctel</strong> como la <strong>cena</strong> tendrán lugar en
-        <strong>Essentia</strong>: una experiencia de alta cocina donde el producto manda.
+        <strong>Essentia</strong>, reconocido con varios <strong>Soles Repsol</strong>:
+        cocina de autor con productos de calidad y de temporada.
       </p>
     </section>
 
@@ -378,6 +378,7 @@
           <div class="tl-content">
             <span class="tl-time">???</span>
             <span class="tl-label">The show must go on</span>
+            <span class="tl-sublabel">Sorpresa de madrugada</span>
           </div>
         </div>
       </div>
@@ -385,7 +386,7 @@
 
     <!-- Hotel Ansares - Alojamiento -->
     <section class="section-hotel fade-in-section">
-      <h3 class="hotel-title">Tu Alojamiento</h3>
+      <h3 class="hotel-title">Vuestro Alojamiento</h3>
       <div class="separator small">
         <span class="sep-line"></span>
         <span class="sep-diamond">&#9830;</span>
@@ -398,6 +399,9 @@
       </p>
 
       <div class="hotel-gallery">
+        <div class="hotel-photo hotel-photo-wide">
+          <img src="foto.jpg" alt="Patio del Hotel Ansares">
+        </div>
         <div class="hotel-photo">
           <img src="hotel/WhatsApp Image 2026-03-23 at 15.52.59.jpeg" alt="Hotel Ansares">
         </div>
@@ -439,7 +443,7 @@
             <line x1="14" y1="10" x2="18.5" y2="10"/>
             <line x1="14" y1="13.5" x2="18.5" y2="13.5"/>
           </svg>
-          <span>Trae tu DNI o pasaporte<br>para el check-in</span>
+          <span>Traed vuestro DNI o pasaporte<br>para el check-in</span>
         </div>
       </div>
     </section>
@@ -557,8 +561,8 @@
     <section class="section-rsvp fade-in-section">
       <h3 class="rsvp-title">Confirma tu Asistencia</h3>
       <p class="rsvp-text">
-        Tu presencia haría este día aún más especial.<br>
-        Confirma <strong>una sola vez por familia</strong>, incluyendo a todos los que venís.<br>
+        Vuestra presencia haría este día aún más especial.<br>
+        Confirmad <strong>una sola vez por familia</strong>, incluyendo a todos los que venís.<br>
         Por favor, hacedlo antes del <strong>31 de enero de 2027</strong>.
       </p>
 
@@ -719,7 +723,7 @@
       <div class="rsvp-success hidden" id="rsvp-success">
         <div class="success-icon">&#10003;</div>
         <p class="success-text">¡Gracias por confirmar!</p>
-        <p class="success-subtext">Hemos recibido tu respuesta.<br>¡Nos vemos el 29 de mayo!</p>
+        <p class="success-subtext">Hemos recibido vuestra respuesta.<br>¡Nos vemos el 29 de mayo!</p>
       </div>
     </section>
 
@@ -771,6 +775,18 @@
 
         <div class="accordion-item">
           <button class="accordion-header">
+            <span>¿Están invitados los niños?</span>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="accordion-body hidden">
+            <p>¡Claro que sí! Los niños son bienvenidos. Indicadlos al confirmar la asistencia para tenerlos en cuenta en el menú y en el hotel.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
             <span>¿La ceremonia es al aire libre?</span>
             <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 12 15 18 9"/>
@@ -804,20 +820,32 @@
             <p>Todo se celebrará en el mismo recinto, no hace falta desplazarse.</p>
           </div>
         </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            <span>¿Qué os regalamos?</span>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="accordion-body hidden">
+            <p>Vuestra presencia es el mejor regalo. Si además queréis hacernos otro, escribidnos por WhatsApp y os lo contamos.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Contacto -->
     <section class="section-contact fade-in-section">
-      <h3 class="contact-title">¿Tienes alguna duda?</h3>
+      <h3 class="contact-title">¿Tenéis alguna duda?</h3>
       <div class="separator small">
         <span class="sep-line"></span>
         <span class="sep-diamond">&#9830;</span>
         <span class="sep-line"></span>
       </div>
       <p class="contact-text">
-        Escríbenos por WhatsApp si tienes cualquier duda,<br>
-        o si cambian tus planes después de confirmar.
+        Escribidnos por WhatsApp si tenéis cualquier duda,<br>
+        o si cambian vuestros planes después de confirmar.
       </p>
       <a class="whatsapp-btn" href="https://wa.me/34722184679?text=Hola%2C%20tengo%20una%20duda%20sobre%20la%20boda%20de%20V%C3%ADctor%20y%20Leticia" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
@@ -825,7 +853,7 @@
         </svg>
         ¿Dudas? Escríbenos
       </a>
-      <p class="contact-share-text">¿Quieres reenviar la invitación a tu pareja o a tu familia?</p>
+      <p class="contact-share-text">Si queréis reenviar la invitación a alguien de la familia, podéis hacerlo desde aquí.</p>
       <button type="button" class="share-btn" id="share-btn">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="18" cy="5" r="3"/>
@@ -845,6 +873,7 @@
         <span class="sep-diamond">&#9830;</span>
         <span class="sep-line"></span>
       </div>
+      <p class="footer-thanks">Gracias por formar parte de este día.<br>Con todo nuestro cariño,</p>
       <p class="footer-names">Víctor & Leticia</p>
       <p class="footer-date">29 &middot; 05 &middot; 2027</p>
       <div class="ornament-bottom">
