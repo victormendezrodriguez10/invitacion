@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cuánto nos conoces? - Víctor & Leticia</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #D4B96A;
+      --gold-dark: #A8893A;
+      --cream: #FFF8F0;
+      --champagne: #F5E6CC;
+      --dark: #2C2C2C;
+      --dark-soft: #5A5A5A;
+      --ok: #3E8E5A;
+      --ok-bg: #E6F4EA;
+      --ko: #B5443A;
+      --ko-bg: #FBE9E7;
+      --font-cursive: 'Great Vibes', cursive;
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'Montserrat', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-serif);
+      color: var(--dark);
+      background: linear-gradient(135deg, var(--cream) 0%, var(--champagne) 60%, #EDD9B7 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Cabecera */
+    .head { text-align: center; margin-bottom: 1.5rem; }
+
+    .monogram {
+      font-family: var(--font-cursive);
+      font-size: 1.8rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+
+    .title {
+      font-family: var(--font-cursive);
+      font-size: 2.6rem;
+      color: var(--gold-dark);
+      line-height: 1.1;
+      margin-top: 0.3rem;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 0.8rem auto 0;
+    }
+
+    .sep-line { width: 40px; height: 1px; background: var(--gold); opacity: 0.6; }
+    .sep-diamond { color: var(--gold); font-size: 0.5rem; }
+
+    /* Tarjeta */
+    .card {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(201, 168, 76, 0.18);
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(120, 90, 30, 0.08);
+      padding: 1.6rem 1.3rem;
+      backdrop-filter: blur(6px);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .text {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--dark-soft);
+      text-align: center;
+    }
+
+    .text strong { color: var(--dark); font-weight: 600; }
+
+    .prize {
+      margin: 1.2rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.14), rgba(212,185,106,0.08));
+      border: 1px dashed rgba(201, 168, 76, 0.5);
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dark-soft);
+      margin: 1.2rem 0 0.4rem;
+    }
+
+    .input {
+      width: 100%;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      background: #FFFDF8;
+      color: var(--dark);
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 1.3rem;
+      padding: 0.95rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      box-shadow: 0 6px 20px rgba(201, 168, 76, 0.35);
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(201, 168, 76, 0.45); }
+    .btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--dark-soft);
+      border: 1.5px solid rgba(201, 168, 76, 0.5);
+      box-shadow: none;
+    }
+
+    /* Pregunta */
+    .quiz-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dark-soft);
+    }
+
+    .timer { font-variant-numeric: tabular-nums; color: var(--gold-dark); }
+
+    .progress {
+      height: 4px;
+      margin: 0.8rem 0 1.4rem;
+      border-radius: 4px;
+      background: rgba(201, 168, 76, 0.18);
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .question {
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+      color: var(--dark);
+      min-height: 3.6rem;
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 1.3rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      width: 100%;
+      text-align: left;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(201, 168, 76, 0.35);
+      background: #FFFDF8;
+      font-family: var(--font-serif);
+      font-size: 1.08rem;
+      color: var(--dark);
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .option:nth-child(1) { animation-delay: 0.05s; }
+    .option:nth-child(2) { animation-delay: 0.12s; }
+    .option:nth-child(3) { animation-delay: 0.19s; }
+    .option:nth-child(4) { animation-delay: 0.26s; }
+
+    .option .letter {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gold-dark);
+      background: rgba(201, 168, 76, 0.15);
+    }
+
+    .option:hover:not(:disabled) {
+      border-color: var(--gold);
+      transform: translateX(3px);
+      box-shadow: 0 4px 14px rgba(201, 168, 76, 0.18);
+    }
+
+    .option:disabled { cursor: default; }
+
+    .option.correct {
+      background: var(--ok-bg);
+      border-color: var(--ok);
+      color: var(--ok);
+      font-weight: 600;
+    }
+
+    .option.correct .letter { background: var(--ok); color: #fff; }
+
+    .option.wrong {
+      background: var(--ko-bg);
+      border-color: var(--ko);
+      color: var(--ko);
+      animation: shake 0.4s ease;
+    }
+
+    .option.wrong .letter { background: var(--ko); color: #fff; }
+
+    .option.dim { opacity: 0.45; }
+
+    /* Resultado */
+    .score-wrap { text-align: center; margin: 0.5rem 0 1rem; }
+
+    .score-name {
+      font-family: var(--font-cursive);
+      font-size: 2.2rem;
+      color: var(--gold-dark);
+      line-height: 1.1;
+    }
+
+    .score {
+      font-size: 4.6rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--gold-dark);
+      margin-top: 0.4rem;
+      animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    .score small { font-size: 1.6rem; color: var(--dark-soft); }
+
+    .score-time {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dark-soft);
+      margin-top: 0.5rem;
+    }
+
+    .status {
+      margin-top: 1.2rem;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--dark-soft);
+      min-height: 1.2em;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.ko { color: var(--ko); }
+
+    .foot {
+      margin-top: auto;
+      padding-top: 2rem;
+      text-align: center;
+    }
+
+    .foot-names { font-family: var(--font-cursive); font-size: 1.8rem; color: var(--gold); }
+
+    .foot-date {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--dark-soft);
+      margin-top: 0.2rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dark-soft);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.5);
+      padding-bottom: 2px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.4); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+
+    @media (min-width: 480px) {
+      .title { font-size: 3.2rem; }
+      .card { padding: 2rem 1.8rem; }
+      .question { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="head">
+      <div class="monogram">V &amp; L</div>
+      <h1 class="title">¿Cuánto nos conoces?</h1>
+      <div class="separator">
+        <span class="sep-line"></span>
+        <span class="sep-diamond">&#9830;</span>
+        <span class="sep-line"></span>
+      </div>
+    </header>
+
+    <div class="card">
+      <!-- Pantalla de inicio -->
+      <section class="screen active" id="screen-intro">
+        <p class="text">
+          Diez preguntas sobre nosotros.<br>
+          <strong>Quien más acierte se lleva un premio el día de la boda.</strong><br>
+          Si hay empate, gana quien haya sido más rápido.
+        </p>
+        <div class="prize">
+          Solo tienes <strong>un intento</strong>, así que piénsalo bien.<br>
+          El tiempo empieza a contar en la primera pregunta.
+        </div>
+        <form id="form-start">
+          <label for="player-name">Tu nombre y apellidos</label>
+          <input class="input" type="text" id="player-name" name="nombre" placeholder="Para saber quién gana" required autocomplete="name" maxlength="80">
+          <button class="btn" type="submit">Empezar</button>
+        </form>
+      </section>
+
+      <!-- Pantalla de preguntas -->
+      <section class="screen" id="screen-quiz">
+        <div class="quiz-top">
+          <span id="quiz-counter">Pregunta 1 de 10</span>
+          <span class="timer" id="quiz-timer">00:00</span>
+        </div>
+        <div class="progress"><span id="quiz-progress"></span></div>
+        <p class="question" id="quiz-question"></p>
+        <div class="options" id="quiz-options"></div>
+      </section>
+
+      <!-- Pantalla de resultado -->
+      <section class="screen" id="screen-result">
+        <div class="score-wrap">
+          <p class="score-name" id="result-name"></p>
+          <p class="score"><span id="result-score">0</span><small> / <span id="result-total">10</span></small></p>
+          <p class="score-time" id="result-time"></p>
+        </div>
+        <p class="text" id="result-message"></p>
+        <p class="status" id="result-status"></p>
+        <button class="btn ghost" id="btn-retry-send" type="button" style="display:none">Reintentar el envío</button>
+        <a class="btn" href="index.html">Volver a la invitación</a>
+      </section>
+    </div>
+
+    <footer class="foot">
+      <p class="foot-names">Víctor &amp; Leticia</p>
+      <p class="foot-date">29 · 05 · 2027</p>
+      <a class="back-link" href="index.html">Volver a la invitación</a>
+    </footer>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // =====================================================================
+    // PREGUNTAS - EDITAD AQUÍ
+    // "correcta" es la posicion (empezando en 0) de la respuesta correcta
+    // dentro de "opciones". Las opciones se barajan al jugar.
+    // =====================================================================
+    var QUESTIONS = [
+      {
+        pregunta: '¿Dónde se conocieron Víctor y Leticia?',
+        opciones: ['En el parque Bella Vista de Rivas', 'En una boda', 'En el trabajo', 'Por Instagram'],
+        correcta: 0
+      },
+      {
+        pregunta: '¿En qué año se conocieron?',
+        opciones: ['2015', '2017', '2019', '2021'],
+        correcta: 1
+      },
+      {
+        pregunta: '¿Dónde fue la pedida?',
+        opciones: ['En París', 'En Roma', 'En Alsacia', 'En Lisboa'],
+        correcta: 2
+      },
+      {
+        pregunta: '¿En qué localidad viven juntos?',
+        opciones: ['Rivas', 'Arganda del Rey', 'Tarancón', 'Madrid centro'],
+        correcta: 1
+      },
+      {
+        pregunta: '¿En qué año se convirtieron en compañeros de trabajo?',
+        opciones: ['2022', '2023', '2024', '2025'],
+        correcta: 2
+      },
+      {
+        pregunta: '¿Quién de los dos cocina mejor?',
+        opciones: ['Víctor', 'Leticia', 'Los dos igual', 'Ninguno, pedimos a domicilio'],
+        correcta: 0 // REVISAR
+      },
+      {
+        pregunta: '¿Quién es más puntual?',
+        opciones: ['Víctor', 'Leticia', 'Ninguno de los dos', 'Depende del plan'],
+        correcta: 1 // REVISAR
+      },
+      {
+        pregunta: '¿Quién dijo "te quiero" primero?',
+        opciones: ['Víctor', 'Leticia', 'Lo dijeron a la vez', 'Todavía no lo han dicho'],
+        correcta: 0 // REVISAR
+      },
+      {
+        pregunta: '¿Cuál es su plan perfecto de domingo?',
+        opciones: ['Sofá, manta y serie', 'Comida en familia', 'Escapada a la montaña', 'Brunch y paseo'],
+        correcta: 0 // REVISAR
+      },
+      {
+        pregunta: '¿Dónde se celebra la boda?',
+        opciones: ['Hotel Ansares, Tarancón', 'Finca en Rivas', 'Parador de Cuenca', 'Hotel en Arganda'],
+        correcta: 0
+      }
+    ];
+
+    // Mensajes segun aciertos
+    function messageFor(score, total) {
+      var pct = score / total;
+      if (pct === 1) return '¡Pleno! Nos conoces mejor que nosotros mismos. Vas directo a por el premio.';
+      if (pct >= 0.8) return '¡Impresionante! Está claro que has estado atento a todo. Estás entre los favoritos.';
+      if (pct >= 0.6) return 'Muy bien. Se nota que nos conoces, aunque aún tienes cosas que descubrir en la boda.';
+      if (pct >= 0.4) return 'No está mal, pero hay que ponerse al día. El 29 de mayo te lo contamos todo.';
+      return 'Bueno... lo importante es que vengas a la boda. ¡Allí nos conocerás mucho mejor!';
+    }
+
+    // Envio de resultados (FormSubmit, mismo correo que las confirmaciones)
+    var FORM_EMAIL = 'victoryleti29@gmail.com';
+    var STORAGE_KEY = 'vl_quiz_result';
+
+    // =====================================================================
+    var screens = {
+      intro: document.getElementById('screen-intro'),
+      quiz: document.getElementById('screen-quiz'),
+      result: document.getElementById('screen-result')
+    };
+
+    var state = {
+      name: '',
+      index: 0,
+      score: 0,
+      startedAt: 0,
+      elapsed: 0,
+      answers: [],
+      timerId: null,
+      locked: false
+    };
+
+    function show(name) {
+      Object.keys(screens).forEach(function (k) {
+        screens[k].classList.toggle('active', k === name);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function formatTime(sec) {
+      var m = Math.floor(sec / 60);
+      var s = sec % 60;
+      return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function loadSaved() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+
+    function save(data) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+    }
+
+    // ---------- Temporizador ----------
+    function startTimer() {
+      state.startedAt = Date.now();
+      var el = document.getElementById('quiz-timer');
+      state.timerId = setInterval(function () {
+        el.textContent = formatTime(Math.floor((Date.now() - state.startedAt) / 1000));
+      }, 250);
+    }
+
+    function stopTimer() {
+      clearInterval(state.timerId);
+      state.elapsed = Math.round((Date.now() - state.startedAt) / 1000);
+    }
+
+    // ---------- Preguntas ----------
+    function renderQuestion() {
+      var q = QUESTIONS[state.index];
+      var total = QUESTIONS.length;
+      state.locked = false;
+
+      document.getElementById('quiz-counter').textContent = 'Pregunta ' + (state.index + 1) + ' de ' + total;
+      document.getElementById('quiz-progress').style.width = ((state.index) / total * 100) + '%';
+
+      var qEl = document.getElementById('quiz-question');
+      qEl.textContent = q.pregunta;
+      qEl.style.animation = 'none'; void qEl.offsetWidth; qEl.style.animation = '';
+
+      var opts = q.opciones.map(function (text, i) {
+        return { text: text, correct: i === q.correcta };
+      });
+      opts = shuffle(opts);
+
+      var wrap = document.getElementById('quiz-options');
+      wrap.innerHTML = '';
+      var letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+      opts.forEach(function (o, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'option';
+        b.innerHTML = '<span class="letter">' + letters[i] + '</span><span></span>';
+        b.querySelector('span:last-child').textContent = o.text;
+        b.addEventListener('click', function () { answer(b, o, wrap); });
+        wrap.appendChild(b);
+      });
+    }
+
+    function answer(btn, opt, wrap) {
+      if (state.locked) return;
+      state.locked = true;
+
+      var buttons = wrap.querySelectorAll('.option');
+      buttons.forEach(function (b) { b.disabled = true; });
+
+      if (opt.correct) {
+        state.score++;
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+      }
+      buttons.forEach(function (b) {
+        var isCorrect = b.querySelector('span:last-child').textContent === QUESTIONS[state.index].opciones[QUESTIONS[state.index].correcta];
+        if (isCorrect) b.classList.add('correct');
+        else if (b !== btn) b.classList.add('dim');
+      });
+
+      state.answers.push({
+        pregunta: QUESTIONS[state.index].pregunta,
+        respuesta: opt.text,
+        acierto: opt.correct
+      });
+
+      setTimeout(function () {
+        state.index++;
+        if (state.index < QUESTIONS.length) {
+          renderQuestion();
+        } else {
+          finish();
+        }
+      }, opt.correct ? 900 : 1400);
+    }
+
+    // ---------- Final ----------
+    function finish() {
+      stopTimer();
+      document.getElementById('quiz-progress').style.width = '100%';
+
+      var result = {
+        nombre: state.name,
+        aciertos: state.score,
+        total: QUESTIONS.length,
+        tiempo: state.elapsed,
+        respuestas: state.answers,
+        fecha: new Date().toISOString(),
+        enviado: false
+      };
+      save(result);
+      renderResult(result);
+      sendResult(result);
+    }
+
+    function renderResult(r) {
+      document.getElementById('result-name').textContent = r.nombre;
+      document.getElementById('result-score').textContent = r.aciertos;
+      document.getElementById('result-total').textContent = r.total;
+      document.getElementById('result-time').textContent = 'Tiempo: ' + formatTime(r.tiempo);
+      document.getElementById('result-message').textContent = messageFor(r.aciertos, r.total);
+      setStatus(r.enviado ? 'Resultado registrado. ¡Mucha suerte!' : '', r.enviado ? 'ok' : '');
+      show('result');
+    }
+
+    function setStatus(text, cls) {
+      var el = document.getElementById('result-status');
+      el.textContent = text;
+      el.className = 'status' + (cls ? ' ' + cls : '');
+      document.getElementById('btn-retry-send').style.display = cls === 'ko' ? 'inline-flex' : 'none';
+    }
+
+    function sendResult(r) {
+      setStatus('Registrando tu resultado...', '');
+      var detalle = r.respuestas.map(function (a, i) {
+        return (i + 1) + '. ' + a.pregunta + ' -> ' + a.respuesta + (a.acierto ? ' (OK)' : ' (X)');
+      }).join('\n');
+
+      var payload = {
+        _subject: 'Juego: ' + r.nombre + ' - ' + r.aciertos + '/' + r.total + ' en ' + formatTime(r.tiempo),
+        _template: 'table',
+        _captcha: 'false',
+        Nombre: r.nombre,
+        Aciertos: r.aciertos + ' de ' + r.total,
+        Tiempo: formatTime(r.tiempo) + ' (' + r.tiempo + ' s)',
+        Fecha: new Date(r.fecha).toLocaleString('es-ES'),
+        Respuestas: detalle
+      };
+
+      fetch('https://formsubmit.co/ajax/' + FORM_EMAIL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('HTTP ' + res.status)); })
+      .then(function (data) {
+        if (data && (data.success === 'true' || data.success === true)) {
+          r.enviado = true;
+          save(r);
+          setStatus('Resultado registrado. ¡Mucha suerte!', 'ok');
+        } else {
+          throw new Error('Respuesta inesperada');
+        }
+      })
+      .catch(function () {
+        setStatus('No se ha podido registrar tu resultado. Comprueba la conexión y reintenta.', 'ko');
+      });
+    }
+
+    // ---------- Inicio ----------
+    document.getElementById('form-start').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('player-name').value.trim();
+      if (!name) return;
+      state.name = name;
+      state.index = 0;
+      state.score = 0;
+      state.answers = [];
+      show('quiz');
+      renderQuestion();
+      startTimer();
+    });
+
+    document.getElementById('btn-retry-send').addEventListener('click', function () {
+      var saved = loadSaved();
+      if (saved) sendResult(saved);
+    });
+
+    // Permite a los novios reiniciar para probar: juego.html?reset
+    if (window.location.search.indexOf('reset') !== -1) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    // Un solo intento: si ya jugo, mostrar su resultado
+    var saved = loadSaved();
+    if (saved && typeof saved.aciertos === 'number') {
+      renderResult(saved);
+      if (!saved.enviado) sendResult(saved);
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -203,6 +203,68 @@
       flex-shrink: 0;
     }
 
+    .ty-game-label {
+      margin-top: 2rem;
+      animation-delay: 1.5s;
+    }
+
+    .ty-game {
+      margin-top: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dark);
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: 0 6px 22px rgba(201, 168, 76, 0.45);
+      animation: fadeUp 0.8s ease 1.6s both, gameGlow 2.4s ease-in-out 2.4s infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .ty-game:hover { transform: translateY(-2px); }
+
+    .ty-game svg { width: 18px; height: 18px; }
+
+    @keyframes gameGlow {
+      0%, 100% { box-shadow: 0 6px 22px rgba(201, 168, 76, 0.45); }
+      50% { box-shadow: 0 6px 30px rgba(201, 168, 76, 0.8); }
+    }
+
+    /* Aviso junto al boton de musica mientras esta silenciada */
+    .music-hint {
+      position: fixed;
+      bottom: 2.1rem;
+      right: 5.2rem;
+      z-index: 100;
+      font-family: var(--font-sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.45rem 0.8rem;
+      border-radius: 50px;
+      backdrop-filter: blur(10px);
+      pointer-events: none;
+      animation: hintPulse 2s ease-in-out infinite;
+      transition: opacity 0.4s ease;
+    }
+
+    .music-hint.hidden { opacity: 0; }
+
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
     .ty-calendar-label {
       margin-top: 1.8rem;
       font-family: var(--font-sans);
@@ -365,10 +427,23 @@
       </a>
     </div>
 
+    <p class="ty-calendar-label ty-game-label">¿Cuánto nos conoces?</p>
+    <a class="ty-game" href="juego.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 21h8"/>
+        <path d="M12 17v4"/>
+        <path d="M7 4h10v5a5 5 0 0 1-10 0z"/>
+        <path d="M17 6h2a2 2 0 0 1 0 4h-2"/>
+        <path d="M7 6H5a2 2 0 0 0 0 4h2"/>
+      </svg>
+      Juega y gana un premio
+    </a>
+
     <a href="index.html" class="ty-back">Volver a la invitación</a>
   </div>
 
   <!-- Boton musica -->
+  <span class="music-hint hidden" id="music-hint">Toca para activar la música</span>
   <button class="music-toggle" id="music-toggle">
     <svg class="music-icon-on" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M9 18V5l12-2v13"/>
@@ -400,10 +475,13 @@
 
     // Intentar reproducir al cargar; si el navegador lo bloquea,
     // arrancar con el primer toque en cualquier parte de la pagina
+    var musicHint = document.getElementById('music-hint');
+
     function tryPlay() {
       return music.play().then(function () {
         playing = true;
         musicBtn.classList.remove('paused');
+        if (musicHint) musicHint.classList.add('hidden');
       });
     }
 
@@ -416,6 +494,7 @@
 
     tryPlay().catch(function () {
       musicBtn.classList.add('paused');
+      if (musicHint) musicHint.classList.remove('hidden');
       document.addEventListener('pointerdown', startOnFirstTouch);
       document.addEventListener('keydown', startOnFirstTouch);
     });
@@ -429,6 +508,7 @@
         music.play().then(function () {
           playing = true;
           musicBtn.classList.remove('paused');
+          if (musicHint) musicHint.classList.add('hidden');
         });
       }
     });
