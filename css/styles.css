@@ -2229,8 +2229,17 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.form-notice-hotel {
+  margin-bottom: 0.8rem;
+}
+
+.form-notice strong {
+  font-weight: 600;
+}
+
 @media (min-width: 480px) {
-  .person-cols { grid-template-columns: 140px 1fr; }
+  .person-cols { grid-template-columns: 1fr 1fr; }
+  .person-cols .person-diet { grid-column: 1 / -1; }
 }
 
 /* Aviso DNI/Pasaporte hotel */

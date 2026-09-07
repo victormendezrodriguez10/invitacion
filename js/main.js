@@ -540,6 +540,7 @@
       row.querySelector('.person-title').textContent = 'Persona ' + n;
       row.querySelector('.person-name').name = 'Persona ' + n + ' - Nombre y apellidos';
       row.querySelector('.person-type').name = 'Persona ' + n + ' - Adulto o niño';
+      row.querySelector('.person-hotel').name = 'Persona ' + n + ' - Hotel';
       row.querySelector('.person-diet').name = 'Persona ' + n + ' - Alergias';
     });
     if (addPersonBtn) addPersonBtn.style.display = rows.length >= MAX_PERSONAS - 1 ? 'none' : '';
@@ -559,14 +560,20 @@
           '<option value="Adulto">Adulto</option>' +
           '<option value="Niño">Niño</option>' +
         '</select>' +
+        '<select class="form-input form-select person-hotel">' +
+          '<option value="Sí, se queda">Hotel: sí, se queda</option>' +
+          '<option value="No se queda">Hotel: no se queda</option>' +
+        '</select>' +
         '<input type="text" class="form-input person-diet" placeholder="Alergias o dieta (opcional)">' +
       '</div>';
     row.querySelector('.person-remove').addEventListener('click', function () {
       row.remove();
       renumberPeople();
+      toggleHotelNotice();
     });
     peopleList.appendChild(row);
     renumberPeople();
+    toggleHotelNotice();
     row.querySelector('.person-name').focus();
   }
 
@@ -575,12 +582,22 @@
   // Totales (quien rellena + personas anadidas)
   function countPeople() {
     var adults = 1, kids = 0;
+    var hotelYesEl = document.getElementById('hotel-yes');
+    var hotel = (hotelYesEl && hotelYesEl.checked) ? 1 : 0;
     if (peopleList) {
-      peopleList.querySelectorAll('.person-type').forEach(function (sel) {
-        if (sel.value === 'Niño') kids++; else adults++;
+      peopleList.querySelectorAll('.person-row').forEach(function (row) {
+        if (row.querySelector('.person-type').value === 'Niño') kids++; else adults++;
+        if (row.querySelector('.person-hotel').value === 'Sí, se queda') hotel++;
       });
     }
-    return { adults: adults, kids: kids, total: adults + kids };
+    return { adults: adults, kids: kids, total: adults + kids, hotel: hotel };
+  }
+
+  // Aviso del DNI si alguien de la lista cambia su alojamiento
+  if (peopleList) {
+    peopleList.addEventListener('change', function (e) {
+      if (e.target.classList.contains('person-hotel')) toggleHotelNotice();
+    });
   }
 
   // Mostrar/ocultar aviso DNI/Pasaporte segun alojamiento
@@ -590,7 +607,7 @@
   function toggleHotelNotice() {
     var hotelNotice = document.getElementById('hotel-notice');
     if (!hotelNotice) return;
-    if (hotelYes && hotelYes.checked && !rsvpFields.classList.contains('hidden')) {
+    if (!rsvpFields.classList.contains('hidden') && countPeople().hotel > 0) {
       hotelNotice.classList.remove('hidden');
     } else {
       hotelNotice.classList.add('hidden');
@@ -619,6 +636,7 @@
           document.getElementById('total-personas').value = c.total;
           document.getElementById('total-adultos').value = c.adults;
           document.getElementById('total-ninos').value = c.kids;
+          document.getElementById('total-hotel').value = c.hotel;
           detalle = 'Sí asiste (' + c.total + (c.total === 1 ? ' persona)' : ' personas)');
         }
         subject.value = '[CONFIRMACIÓN] ' + (quien || 'Invitado') + ' - ' + detalle;

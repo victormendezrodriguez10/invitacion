@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260907-4">
+  <link rel="stylesheet" href="css/styles.css?v=20260907-5">
 </head>
 <body>
 
@@ -392,6 +392,7 @@
       </div>
       <p class="hotel-intro">
         Hemos reservado el alojamiento en el <strong>Hotel Ansares</strong> para todos nuestros invitados.
+        Está <strong>incluido en el cubierto</strong>, así que no os supone ningún gasto.
         Disfrutad de una estancia sin preocupaciones y celebrad con nosotros hasta el final.
       </p>
 
@@ -587,7 +588,7 @@
         <ol class="rsvp-intro-list">
           <li><strong>Confirma una sola vez por familia.</strong> Basta con que lo rellene una persona.</li>
           <li>Pon tus datos y, en <strong>"¿Viene alguien más contigo?"</strong>, añade a tu pareja, hijos o familiares que vengan.</li>
-          <li>Indica si os quedáis a dormir en el hotel y las alergias de cada uno.</li>
+          <li>Indica quién se queda a dormir en el hotel. <strong>Está incluido en el cubierto</strong>, sin ningún gasto para vosotros.</li>
           <li>Si no puedes venir, marca <strong>"No podré asistir"</strong> y solo te pediremos tu nombre.</li>
         </ol>
         <p class="rsvp-intro-note">Te llevará menos de dos minutos.</p>
@@ -644,6 +645,24 @@
               <input type="email" class="form-input" id="rsvp-email" name="email" placeholder="tu@email.com" required>
             </div>
 
+            <!-- Alojamiento (por persona; quien rellena) -->
+            <div class="form-group">
+              <p class="form-notice form-notice-hotel">&#127968; El hotel está <strong>incluido en el cubierto</strong>: no supone ningún gasto para vosotros. ¡Queremos que os quedéis todos!</p>
+              <label class="form-label">¿Te quedas a dormir en el hotel?</label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="Alojamiento" value="Sí, me quedo" id="hotel-yes" checked>
+                  <span class="radio-custom"></span>
+                  Sí, me quedo
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="Alojamiento" value="No, gracias" id="hotel-no">
+                  <span class="radio-custom"></span>
+                  No, gracias
+                </label>
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="form-label" for="rsvp-alergias">Tus alergias o necesidades alimentarias</label>
               <textarea class="form-input form-textarea" id="rsvp-alergias" name="Alergias / Dieta" rows="2" placeholder="Ej: celiaco, vegano, alergia a frutos secos..."></textarea>
@@ -653,32 +672,16 @@
             <input type="hidden" name="Total personas" id="total-personas" value="1">
             <input type="hidden" name="Adultos" id="total-adultos" value="1">
             <input type="hidden" name="Niños" id="total-ninos" value="0">
+            <input type="hidden" name="Se quedan en el hotel" id="total-hotel" value="1">
 
             <!-- Personas que vienen contigo -->
             <div class="form-group">
               <label class="form-label">¿Viene alguien más contigo?</label>
-              <p class="form-hint">Añade a tu pareja, hijos o familiares que vengan contigo. Así confirmáis una sola vez por familia.</p>
+              <p class="form-hint">Añade a tu pareja, hijos o familiares que vengan contigo, e indica quién se queda en el hotel. Así confirmáis una sola vez por familia.</p>
               <div class="people-list" id="people-list"></div>
               <button type="button" class="add-person-btn" id="add-person-btn">
                 <span>+</span> Añadir persona
               </button>
-            </div>
-
-            <!-- Alojamiento -->
-            <div class="form-group">
-              <label class="form-label">¿Os quedáis a dormir en el hotel?</label>
-              <div class="form-radio-group">
-                <label class="form-radio">
-                  <input type="radio" name="Alojamiento" value="Sí, nos quedamos" id="hotel-yes" checked>
-                  <span class="radio-custom"></span>
-                  Sí, nos quedamos
-                </label>
-                <label class="form-radio">
-                  <input type="radio" name="Alojamiento" value="No, gracias" id="hotel-no">
-                  <span class="radio-custom"></span>
-                  No, gracias
-                </label>
-              </div>
             </div>
 
             <div class="form-group hotel-notice hidden" id="hotel-notice">
@@ -861,6 +864,6 @@
     <source src="canon.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="js/main.js?v=20260907-7"></script>
+  <script src="js/main.js?v=20260907-8"></script>
 </body>
 </html>
