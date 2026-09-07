@@ -407,7 +407,7 @@
       <!-- Pantalla de inicio -->
       <section class="screen active" id="screen-intro">
         <p class="text">
-          Diez preguntas sobre nosotros.<br>
+          Diez preguntas sobre nosotros, y una última de propina.<br>
           <strong>Quien más acierte se lleva un premio el día de la boda.</strong><br>
           Si hay empate, gana quien haya sido más rápido.
         </p>
@@ -425,7 +425,7 @@
       <!-- Pantalla de preguntas -->
       <section class="screen" id="screen-quiz">
         <div class="quiz-top">
-          <span id="quiz-counter">Pregunta 1 de 10</span>
+          <span id="quiz-counter">Pregunta 1 de 11</span>
           <span class="timer" id="quiz-timer">00:00</span>
         </div>
         <div class="progress"><span id="quiz-progress"></span></div>
@@ -513,6 +513,12 @@
         pregunta: '¿Dónde nos vimos por primera vez?',
         opciones: ['En las fiestas de Rivas', 'En la megafiesta que dio Víctor', 'En la fiesta del local que alquiló Luis por su 18 cumpleaños', 'En el parque Bellavista paseando'],
         correcta: 2
+      },
+      {
+        pregunta: 'Y la pregunta definitiva... ¿Quién conoce mejor a los novios?',
+        opciones: ['Yo, obviamente', 'La familia', 'Los amigos', 'Nadie está preparado para esta prueba 😂'],
+        correcta: 0,
+        sinPuntuar: true // cualquier respuesta vale, no suma ni resta
       }
     ];
 
@@ -528,6 +534,7 @@
 
     // Envio de resultados (FormSubmit, mismo correo que las confirmaciones)
     var FORM_EMAIL = 'victoryleti29@gmail.com';
+    var TOTAL_PUNTOS = QUESTIONS.filter(function (q) { return !q.sinPuntuar; }).length;
     var STORAGE_KEY = 'vl_quiz_result';
 
     // =====================================================================
@@ -634,22 +641,31 @@
       var buttons = wrap.querySelectorAll('.option');
       buttons.forEach(function (b) { b.disabled = true; });
 
-      if (opt.correct) {
-        state.score++;
+      var q = QUESTIONS[state.index];
+      var acierto = q.sinPuntuar ? true : opt.correct;
+
+      if (q.sinPuntuar) {
         btn.classList.add('correct');
+        buttons.forEach(function (b) { if (b !== btn) b.classList.add('dim'); });
       } else {
-        btn.classList.add('wrong');
+        if (opt.correct) {
+          state.score++;
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+        }
+        buttons.forEach(function (b) {
+          var isCorrect = b.querySelector('span:last-child').textContent === q.opciones[q.correcta];
+          if (isCorrect) b.classList.add('correct');
+          else if (b !== btn) b.classList.add('dim');
+        });
       }
-      buttons.forEach(function (b) {
-        var isCorrect = b.querySelector('span:last-child').textContent === QUESTIONS[state.index].opciones[QUESTIONS[state.index].correcta];
-        if (isCorrect) b.classList.add('correct');
-        else if (b !== btn) b.classList.add('dim');
-      });
 
       state.answers.push({
-        pregunta: QUESTIONS[state.index].pregunta,
+        pregunta: q.pregunta,
         respuesta: opt.text,
-        acierto: opt.correct
+        acierto: acierto,
+        sinPuntuar: !!q.sinPuntuar
       });
 
       setTimeout(function () {
@@ -659,7 +675,7 @@
         } else {
           finish();
         }
-      }, opt.correct ? 900 : 1400);
+      }, acierto ? 900 : 1400);
     }
 
     // ---------- Final ----------
@@ -670,7 +686,7 @@
       var result = {
         nombre: state.name,
         aciertos: state.score,
-        total: QUESTIONS.length,
+        total: TOTAL_PUNTOS,
         tiempo: state.elapsed,
         respuestas: state.answers,
         fecha: new Date().toISOString(),
@@ -701,7 +717,7 @@
     function sendResult(r) {
       setStatus('Registrando tu resultado...', '');
       var detalle = r.respuestas.map(function (a, i) {
-        return (i + 1) + '. ' + a.pregunta + ' -> ' + a.respuesta + (a.acierto ? ' (OK)' : ' (X)');
+        return (i + 1) + '. ' + a.pregunta + ' -> ' + a.respuesta + (a.sinPuntuar ? ' (no puntúa)' : (a.acierto ? ' (OK)' : ' (X)'));
       }).join('\n');
 
       var payload = {
