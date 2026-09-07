@@ -15,7 +15,7 @@
   const birdsContainer = document.getElementById('birds-container');
 
   // ---------- Fecha de la boda ----------
-  const WEDDING_DATE = new Date('2027-05-29T15:00:00');
+  const WEDDING_DATE = new Date('2027-05-29T19:00:00');
 
   // ---------- Estado ----------
   let isOpened = false;
@@ -189,15 +189,34 @@
   // ============================================
   // CUENTA ATRAS
   // ============================================
+  // Cambia el numero con un pequeno giro solo cuando varia
+  function setCountdownValue(id, value) {
+    var el = document.getElementById(id);
+    if (!el || el.textContent === value) return;
+    el.textContent = value;
+    el.classList.remove('tick');
+    void el.offsetWidth;
+    el.classList.add('tick');
+  }
+
   function updateCountdown() {
     var now = new Date();
     var diff = WEDDING_DATE - now;
+    var todayEl = document.getElementById('countdown-today');
+    var countdownEl = document.getElementById('countdown');
 
-    if (diff <= 0) {
-      document.getElementById('countdown-days').textContent = '0';
-      document.getElementById('countdown-hours').textContent = '0';
-      document.getElementById('countdown-minutes').textContent = '0';
-      document.getElementById('countdown-seconds').textContent = '0';
+    var isWeddingDay =
+      now.getFullYear() === WEDDING_DATE.getFullYear() &&
+      now.getMonth() === WEDDING_DATE.getMonth() &&
+      now.getDate() === WEDDING_DATE.getDate();
+    var isAfterWedding = !isWeddingDay && diff <= 0;
+
+    if (isWeddingDay || isAfterWedding) {
+      if (todayEl) {
+        todayEl.textContent = isWeddingDay ? '\u00a1Es hoy!' : '\u00a1Ya nos hemos casado!';
+        todayEl.classList.remove('hidden');
+      }
+      if (countdownEl) countdownEl.classList.add('hidden');
       return;
     }
 
@@ -206,10 +225,10 @@
     var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById('countdown-days').textContent = days;
-    document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
-    document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
-    document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+    setCountdownValue('countdown-days', String(days));
+    setCountdownValue('countdown-hours', hours.toString().padStart(2, '0'));
+    setCountdownValue('countdown-minutes', minutes.toString().padStart(2, '0'));
+    setCountdownValue('countdown-seconds', seconds.toString().padStart(2, '0'));
   }
 
   function startCountdown() {
@@ -250,21 +269,21 @@
       observer.observe(section);
     });
 
-    // Animar la linea del timeline cuando entra en vista
-    var timelineSection = document.querySelector('.section-timeline');
-    if (timelineSection) {
+    // Animar la linea de cada timeline (boda e historia) cuando entra en vista
+    var timelines = document.querySelectorAll('.timeline');
+    if (timelines.length) {
       var tlObserver = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-              timelineSection.classList.add('line-visible');
+              entry.target.classList.add('line-visible');
               tlObserver.unobserve(entry.target);
             }
           });
         },
         { threshold: 0.1 }
       );
-      tlObserver.observe(timelineSection);
+      timelines.forEach(function (tl) { tlObserver.observe(tl); });
     }
   }
 
@@ -560,69 +579,16 @@
   if (hotelYes) hotelYes.addEventListener('change', toggleHotelNotice);
   if (hotelNo) hotelNo.addEventListener('change', toggleHotelNotice);
 
-  // Enviar formulario
-  // FormSubmit requiere activacion del email la primera vez.
-  // Primero intentamos AJAX; si la respuesta indica que el email
-  // no esta activado, dejamos que el formulario se envie de forma
-  // tradicional para que el usuario vea la pagina de activacion.
-  var EMAIL_ACTIVATED_KEY = 'rsvp_email_activated';
-
+  // Enviar formulario: envio tradicional a FormSubmit, que redirige a
+  // gracias.html (campo _next). Solo bloqueamos el boton para evitar dobles envios.
   if (rsvpForm) {
-    rsvpForm.addEventListener('submit', function (e) {
+    rsvpForm.addEventListener('submit', function () {
       var submitBtn = document.getElementById('rsvp-submit');
-      var isActivated = localStorage.getItem(EMAIL_ACTIVATED_KEY) === 'true';
-
-      // Si el email aun no ha sido activado, enviar de forma tradicional
-      // para que FormSubmit muestre la pagina de verificacion
-      if (!isActivated) {
-        // No prevenir default: deja que el form se envie normalmente
+      if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Enviando...';
-        return; // sale sin e.preventDefault()
       }
-
-      // Si ya esta activado, usar AJAX y redirigir a gracias.html
-      e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
-
-      var formData = new FormData(rsvpForm);
-
-      fetch(rsvpForm.action, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      })
-      .then(function (response) {
-        if (response.ok) {
-          window.location.href = formNextUrl.value;
-        } else {
-          throw new Error('Error en el envio');
-        }
-      })
-      .catch(function () {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Enviar Confirmacion';
-        // Fallback: enviar de forma tradicional (redirige via _next)
-        rsvpForm.submit();
-      });
     });
-  }
-
-  // Si vuelve de FormSubmit con ?confirmed=true
-  if (window.location.search.indexOf('confirmed=true') !== -1) {
-    // Marcar email como activado para futuros envios AJAX
-    localStorage.setItem(EMAIL_ACTIVATED_KEY, 'true');
-
-    // Abrir sobre automaticamente y mostrar exito
-    setTimeout(function () {
-      openEnvelope();
-      setTimeout(function () {
-        if (rsvpOpenBtn) rsvpOpenBtn.classList.add('hidden');
-        if (rsvpFormWrapper) rsvpFormWrapper.classList.add('hidden');
-        if (rsvpSuccess) rsvpSuccess.classList.remove('hidden');
-      }, 2500);
-    }, 500);
   }
 
   // ============================================

@@ -1314,7 +1314,7 @@ body {
   transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
 }
 
-.section-timeline.line-visible::before {
+.timeline.line-visible::before {
   transform: translateX(-50%) scaleY(1);
 }
 
@@ -1519,11 +1519,11 @@ body {
 
 /* Caracteristicas del hotel */
 .hotel-features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem;
-  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem 0.8rem;
+  max-width: 360px;
+  margin: 1rem auto 0;
 }
 
 .hotel-feature {
@@ -1531,16 +1531,20 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
-  min-width: 100px;
+  padding: 0.9rem 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(201, 168, 76, 0.12);
 }
 
 .hotel-feature span {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 400;
   color: var(--dark-soft);
   letter-spacing: 0.03em;
   text-align: center;
+  line-height: 1.5;
 }
 
 /* ---------- Gastronomia ---------- */
@@ -1671,6 +1675,43 @@ body {
   color: var(--gold-dark);
   line-height: 1;
   margin-bottom: 0.3rem;
+  display: inline-block;
+  transform-origin: 50% 60%;
+  backface-visibility: hidden;
+}
+
+.countdown-item {
+  perspective: 400px;
+}
+
+.countdown-number.tick {
+  animation: digitFlip 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes digitFlip {
+  0%   { transform: rotateX(-90deg); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+/* Mensaje del dia de la boda */
+.countdown-today {
+  font-family: var(--font-cursive);
+  font-size: 2.6rem;
+  color: var(--gold-dark);
+  line-height: 1.2;
+  margin: 0.5rem 0 1rem;
+  animation: todayPulse 2.4s ease-in-out infinite;
+}
+
+.countdown-today.hidden,
+.countdown.hidden {
+  display: none;
+}
+
+@keyframes todayPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
 }
 
 .countdown-label {
@@ -1680,6 +1721,53 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--dark-soft);
+}
+
+/* ---------- Contacto (WhatsApp) ---------- */
+.section-contact {
+  text-align: center;
+  padding: 2.5rem 0 1.5rem;
+}
+
+.contact-title {
+  font-family: var(--font-cursive);
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.contact-text {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--dark-soft);
+  line-height: 1.8;
+  max-width: 380px;
+  margin: 1rem auto 1.5rem;
+}
+
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: 999px;
+  background: #25D366;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  background: #1ebe5b;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.38);
 }
 
 /* ---------- Galeria ---------- */
@@ -2432,18 +2520,50 @@ body {
 
 /* Variaciones de direccion para items alternos del timeline */
 .tl-left.fade-in-section {
-  transform: translateX(-50px) translateY(25px);
-  transition: opacity 1.8s ease, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(-110px) translateY(10px);
+  transition: opacity 1s ease, transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tl-right.fade-in-section {
-  transform: translateX(50px) translateY(25px);
-  transition: opacity 1.8s ease, transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(110px) translateY(10px);
+  transition: opacity 1s ease, transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* El texto entra un instante despues del icono, siguiendo la linea */
+.tl-item.fade-in-section .tl-content {
+  opacity: 0;
+  transform: translateX(var(--tl-shift, 0));
+  transition: opacity 0.9s ease 0.25s, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+
+.tl-left.fade-in-section .tl-content { --tl-shift: -24px; }
+.tl-right.fade-in-section .tl-content { --tl-shift: 24px; }
+
+.tl-item.fade-in-section.visible .tl-content {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .tl-left.fade-in-section.visible,
 .tl-right.fade-in-section.visible {
   transform: translateX(0) translateY(0);
+}
+
+/* Linea del tiempo de "Nuestra Historia" */
+.history-timeline {
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.history-timeline .tl-time {
+  font-style: normal;
+  font-size: 1.45rem;
+  letter-spacing: 0.06em;
+}
+
+.history-timeline .tl-sublabel {
+  font-style: normal;
+  font-size: 0.72rem;
 }
 
 /* Delay escalonado para la galeria */
