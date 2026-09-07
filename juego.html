@@ -409,7 +409,8 @@
         <p class="text">
           Diez preguntas sobre nosotros, y una última de propina.<br>
           <strong>Quien más acierte se lleva un premio el día de la boda.</strong><br>
-          Si hay empate, gana quien haya sido más rápido.
+          Si hay empate, gana quien haya sido más rápido.<br>
+          Se puede jugar hasta el <strong>30 de abril de 2027</strong>.
         </p>
         <div class="prize">
           Solo tienes <strong>un intento</strong>, así que piénsalo bien.<br>
@@ -420,6 +421,16 @@
           <input class="input" type="text" id="player-name" name="nombre" placeholder="Para saber quién gana" required autocomplete="name" maxlength="80">
           <button class="btn" type="submit">Empezar</button>
         </form>
+      </section>
+
+      <!-- Pantalla de juego cerrado -->
+      <section class="screen" id="screen-closed">
+        <p class="text">
+          <strong>El juego ya ha terminado.</strong><br>
+          Se podía jugar hasta el 30 de abril de 2027.<br>
+          ¡Gracias a todos por participar! El ganador se anunciará en la boda.
+        </p>
+        <a class="btn" href="index.html">Volver a la invitación</a>
       </section>
 
       <!-- Pantalla de preguntas -->
@@ -538,8 +549,11 @@
     var STORAGE_KEY = 'vl_quiz_result';
 
     // =====================================================================
+    var FECHA_LIMITE = new Date('2027-04-30T23:59:59');
+
     var screens = {
       intro: document.getElementById('screen-intro'),
+      closed: document.getElementById('screen-closed'),
       quiz: document.getElementById('screen-quiz'),
       result: document.getElementById('screen-result')
     };
@@ -721,7 +735,7 @@
       }).join('\n');
 
       var payload = {
-        _subject: 'Juego: ' + r.nombre + ' - ' + r.aciertos + '/' + r.total + ' en ' + formatTime(r.tiempo),
+        _subject: '[JUEGO] ' + r.nombre + ' - ' + r.aciertos + '/' + r.total + ' en ' + formatTime(r.tiempo),
         _template: 'table',
         _captcha: 'false',
         Nombre: r.nombre,
@@ -781,6 +795,9 @@
     if (saved && typeof saved.aciertos === 'number') {
       renderResult(saved);
       if (!saved.enviado) sendResult(saved);
+    } else if (new Date() > FECHA_LIMITE) {
+      // Plazo terminado: no se puede empezar una partida nueva
+      show('closed');
     }
   })();
   </script>

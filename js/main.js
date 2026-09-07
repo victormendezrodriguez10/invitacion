@@ -584,6 +584,16 @@
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', function () {
       var submitBtn = document.getElementById('rsvp-submit');
+
+      // Asunto del correo: [CONFIRMACIÓN] Nombre Apellidos - Sí asiste / No asiste
+      var subject = document.getElementById('form-subject');
+      if (subject) {
+        var asiste = attendYes && attendYes.checked;
+        var nombreEl = document.getElementById(asiste ? 'rsvp-nombre' : 'rsvp-no-nombre');
+        var apellidosEl = document.getElementById(asiste ? 'rsvp-apellidos' : 'rsvp-no-apellidos');
+        var quien = ((nombreEl ? nombreEl.value : '') + ' ' + (apellidosEl ? apellidosEl.value : '')).trim();
+        subject.value = '[CONFIRMACIÓN] ' + (quien || 'Invitado') + ' - ' + (asiste ? 'Sí asiste' : 'No asiste');
+      }
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Enviando...';
