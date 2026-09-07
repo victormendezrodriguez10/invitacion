@@ -400,12 +400,6 @@
   var rsvpSuccess = document.getElementById('rsvp-success');
   var attendYes = document.getElementById('attend-yes');
   var attendNo = document.getElementById('attend-no');
-  var companionYes = document.getElementById('companion-yes');
-  var companionNo = document.getElementById('companion-no');
-  var companionNameGroup = document.getElementById('companion-name-group');
-  var kidsYes = document.getElementById('kids-yes');
-  var kidsNo = document.getElementById('kids-no');
-  var kidsCountGroup = document.getElementById('kids-count-group');
   var formNextUrl = document.getElementById('form-next-url');
 
   // URL de retorno tras envio (pagina de agradecimiento)
@@ -509,58 +503,73 @@
     }
   }
 
-  // Habilita/deshabilita el resto de campos de "si asiste" (acompanante,
-  // ninos, alojamiento, alergias, mensaje) para que NO se envien cuando el
+  // Habilita/deshabilita el resto de campos de "si asiste" (personas,
+  // alojamiento, alergias, mensaje) para que NO se envien cuando el
   // invitado marca "No podre asistir"
   function setAttendExtras(enabled) {
     if (!rsvpFields) return;
-    rsvpFields.querySelectorAll('input[type="radio"], textarea').forEach(function (el) {
+    rsvpFields.querySelectorAll('input, select, textarea, button').forEach(function (el) {
       el.disabled = !enabled;
     });
-    if (enabled) {
-      toggleCompanion();
-      toggleKids();
-    } else {
-      var companionInput = document.getElementById('rsvp-companion-name');
-      var kidsSelect = document.getElementById('rsvp-kids-count');
-      if (companionInput) companionInput.disabled = true;
-      if (kidsSelect) kidsSelect.disabled = true;
-    }
   }
 
   if (attendYes) attendYes.addEventListener('change', toggleAttendFields);
   if (attendNo) attendNo.addEventListener('change', toggleAttendFields);
 
-  // Mostrar/ocultar nombre acompanante
-  function toggleCompanion() {
-    var companionInput = document.getElementById('rsvp-companion-name');
-    if (companionYes && companionYes.checked) {
-      companionNameGroup.classList.remove('hidden');
-      companionInput.disabled = false;
-    } else {
-      companionNameGroup.classList.add('hidden');
-      companionInput.disabled = true;
-      companionInput.value = '';
-    }
+  // ---------- Personas que vienen con el invitado ----------
+  var peopleList = document.getElementById('people-list');
+  var addPersonBtn = document.getElementById('add-person-btn');
+  var MAX_PERSONAS = 10; // incluido quien rellena
+
+  function renumberPeople() {
+    var rows = peopleList.querySelectorAll('.person-row');
+    rows.forEach(function (row, i) {
+      var n = i + 2; // la persona 1 es quien rellena el formulario
+      row.querySelector('.person-title').textContent = 'Persona ' + n;
+      row.querySelector('.person-name').name = 'Persona ' + n + ' - Nombre y apellidos';
+      row.querySelector('.person-type').name = 'Persona ' + n + ' - Adulto o niño';
+      row.querySelector('.person-diet').name = 'Persona ' + n + ' - Alergias';
+    });
+    if (addPersonBtn) addPersonBtn.style.display = rows.length >= MAX_PERSONAS - 1 ? 'none' : '';
   }
 
-  if (companionYes) companionYes.addEventListener('change', toggleCompanion);
-  if (companionNo) companionNo.addEventListener('change', toggleCompanion);
-
-  // Mostrar/ocultar cantidad ninos
-  function toggleKids() {
-    var kidsSelect = document.getElementById('rsvp-kids-count');
-    if (kidsYes && kidsYes.checked) {
-      kidsCountGroup.classList.remove('hidden');
-      kidsSelect.disabled = false;
-    } else {
-      kidsCountGroup.classList.add('hidden');
-      kidsSelect.disabled = true;
-    }
+  function addPerson() {
+    var row = document.createElement('div');
+    row.className = 'person-row';
+    row.innerHTML =
+      '<div class="person-head">' +
+        '<span class="person-title"></span>' +
+        '<button type="button" class="person-remove" aria-label="Quitar persona">&times;</button>' +
+      '</div>' +
+      '<input type="text" class="form-input person-name" placeholder="Nombre y apellidos" required>' +
+      '<div class="person-cols">' +
+        '<select class="form-input form-select person-type">' +
+          '<option value="Adulto">Adulto</option>' +
+          '<option value="Niño">Niño</option>' +
+        '</select>' +
+        '<input type="text" class="form-input person-diet" placeholder="Alergias o dieta (opcional)">' +
+      '</div>';
+    row.querySelector('.person-remove').addEventListener('click', function () {
+      row.remove();
+      renumberPeople();
+    });
+    peopleList.appendChild(row);
+    renumberPeople();
+    row.querySelector('.person-name').focus();
   }
 
-  if (kidsYes) kidsYes.addEventListener('change', toggleKids);
-  if (kidsNo) kidsNo.addEventListener('change', toggleKids);
+  if (addPersonBtn) addPersonBtn.addEventListener('click', addPerson);
+
+  // Totales (quien rellena + personas anadidas)
+  function countPeople() {
+    var adults = 1, kids = 0;
+    if (peopleList) {
+      peopleList.querySelectorAll('.person-type').forEach(function (sel) {
+        if (sel.value === 'Niño') kids++; else adults++;
+      });
+    }
+    return { adults: adults, kids: kids, total: adults + kids };
+  }
 
   // Mostrar/ocultar aviso DNI/Pasaporte segun alojamiento
   var hotelYes = document.getElementById('hotel-yes');
@@ -592,7 +601,15 @@
         var nombreEl = document.getElementById(asiste ? 'rsvp-nombre' : 'rsvp-no-nombre');
         var apellidosEl = document.getElementById(asiste ? 'rsvp-apellidos' : 'rsvp-no-apellidos');
         var quien = ((nombreEl ? nombreEl.value : '') + ' ' + (apellidosEl ? apellidosEl.value : '')).trim();
-        subject.value = '[CONFIRMACIÓN] ' + (quien || 'Invitado') + ' - ' + (asiste ? 'Sí asiste' : 'No asiste');
+        var detalle = 'No asiste';
+        if (asiste) {
+          var c = countPeople();
+          document.getElementById('total-personas').value = c.total;
+          document.getElementById('total-adultos').value = c.adults;
+          document.getElementById('total-ninos').value = c.kids;
+          detalle = 'Sí asiste (' + c.total + (c.total === 1 ? ' persona)' : ' personas)');
+        }
+        subject.value = '[CONFIRMACIÓN] ' + (quien || 'Invitado') + ' - ' + detalle;
       }
       if (submitBtn) {
         submitBtn.disabled = true;

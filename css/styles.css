@@ -2052,6 +2052,101 @@ body {
   display: none;
 }
 
+/* Personas que vienen con el invitado */
+.form-hint {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--dark-soft);
+  line-height: 1.5;
+  margin: -0.2rem 0 0.8rem;
+}
+
+.people-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.person-row {
+  padding: 0.9rem;
+  border: 1px dashed rgba(201, 168, 76, 0.45);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  animation: personIn 0.35s ease;
+}
+
+.person-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.person-title {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.person-remove {
+  border: none;
+  background: none;
+  color: var(--dark-soft);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.2rem;
+  transition: color 0.2s ease;
+}
+
+.person-remove:hover { color: #B5443A; }
+
+.person-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.add-person-btn {
+  margin-top: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  background: transparent;
+  border: 1.5px solid rgba(201, 168, 76, 0.5);
+  border-radius: 50px;
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.add-person-btn:hover {
+  background: rgba(201, 168, 76, 0.1);
+  border-color: var(--gold);
+}
+
+.add-person-btn span { font-size: 1.1rem; line-height: 1; }
+
+@keyframes personIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 480px) {
+  .person-cols { grid-template-columns: 140px 1fr; }
+}
+
 /* Aviso DNI/Pasaporte hotel */
 .form-notice {
   font-family: var(--font-serif);
