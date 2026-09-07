@@ -410,6 +410,8 @@
 
   // Abrir formulario con animacion de puertas
   var doorsOverlay = document.getElementById('doors-overlay');
+  var rsvpIntro = document.getElementById('rsvp-intro');
+  var rsvpIntroNext = document.getElementById('rsvp-intro-next');
 
   if (rsvpOpenBtn) {
     rsvpOpenBtn.addEventListener('click', function () {
@@ -418,12 +420,22 @@
       // Mostrar puertas y animarlas
       doorsOverlay.classList.remove('hidden');
 
-      // Cuando las puertas terminan de abrirse, mostrar formulario
+      // Cuando las puertas terminan de abrirse, mostrar las instrucciones
       setTimeout(function () {
         doorsOverlay.classList.add('hidden');
-        rsvpFormWrapper.classList.remove('hidden');
-        rsvpFormWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var target = rsvpIntro || rsvpFormWrapper;
+        target.classList.remove('hidden');
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 1600);
+    });
+  }
+
+  // "Siguiente": de las instrucciones al formulario
+  if (rsvpIntroNext) {
+    rsvpIntroNext.addEventListener('click', function () {
+      rsvpIntro.classList.add('hidden');
+      rsvpFormWrapper.classList.remove('hidden');
+      rsvpFormWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 

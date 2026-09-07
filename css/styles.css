@@ -1900,6 +1900,92 @@ body {
 }
 
 /* ---------- Formulario RSVP ---------- */
+/* Instrucciones previas al formulario */
+.rsvp-intro {
+  max-width: 420px;
+  margin: 1.5rem auto 0;
+  background: white;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  text-align: left;
+  animation: introIn 0.5s ease both;
+}
+
+.rsvp-intro.hidden {
+  display: none;
+}
+
+.rsvp-intro-title {
+  font-family: var(--font-cursive);
+  font-size: 1.9rem;
+  color: var(--gold-dark);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.rsvp-intro-list {
+  list-style: none;
+  counter-reset: paso;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 0 0 1.2rem;
+  padding: 0;
+}
+
+.rsvp-intro-list li {
+  counter-increment: paso;
+  position: relative;
+  padding-left: 2.4rem;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--dark-soft);
+}
+
+.rsvp-intro-list li strong {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+.rsvp-intro-list li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  background: rgba(201, 168, 76, 0.15);
+}
+
+.rsvp-intro-note {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dark-soft);
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+@keyframes introIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .rsvp-form-wrapper {
   max-width: 420px;
   margin: 1.5rem auto 0;

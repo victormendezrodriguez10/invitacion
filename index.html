@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260907-3">
+  <link rel="stylesheet" href="css/styles.css?v=20260907-4">
 </head>
 <body>
 
@@ -581,6 +581,19 @@
         </div>
       </div>
 
+      <!-- Instrucciones antes del formulario -->
+      <div class="rsvp-intro hidden" id="rsvp-intro">
+        <p class="rsvp-intro-title">Antes de empezar</p>
+        <ol class="rsvp-intro-list">
+          <li><strong>Confirma una sola vez por familia.</strong> Basta con que lo rellene una persona.</li>
+          <li>Pon tus datos y, en <strong>"¿Viene alguien más contigo?"</strong>, añade a tu pareja, hijos o familiares que vengan.</li>
+          <li>Indica si os quedáis a dormir en el hotel y las alergias de cada uno.</li>
+          <li>Si no puedes venir, marca <strong>"No podré asistir"</strong> y solo te pediremos tu nombre.</li>
+        </ol>
+        <p class="rsvp-intro-note">Te llevará menos de dos minutos.</p>
+        <button type="button" class="rsvp-submit" id="rsvp-intro-next">Siguiente</button>
+      </div>
+
       <!-- Formulario de confirmacion -->
       <div class="rsvp-form-wrapper hidden" id="rsvp-form-wrapper">
         <form
@@ -848,6 +861,6 @@
     <source src="canon.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="js/main.js?v=20260907-6"></script>
+  <script src="js/main.js?v=20260907-7"></script>
 </body>
 </html>
