@@ -113,7 +113,7 @@
       letter.style.boxShadow = '0 24px 60px rgba(0,0,0,0.16)';
     }, 2800);
 
-    // Fase 3 (3.8s): la carta sigue creciendo y se funde con la invitacion,
+    // Fase 3 (6.2s): tras ~2s de lectura, la carta sigue creciendo y se funde con la invitacion,
     // que aparece por debajo (fundido cruzado, sin pantalla en blanco)
     setTimeout(function () {
       letterContent.classList.remove('hidden');
@@ -126,10 +126,10 @@
 
       envelopeScreen.style.transition = 'opacity 0.8s ease 0.1s';
       envelopeScreen.style.opacity = '0';
-    }, 3800);
+    }, 6200);
 
-    // Fase 4 (4.7s): activar la pagina
-    setTimeout(revealContent, 4700);
+    // Fase 4 (7.1s): activar la pagina
+    setTimeout(revealContent, 7100);
   }
 
   // Evento click en la pantalla del sobre
