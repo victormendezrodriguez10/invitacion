@@ -290,23 +290,15 @@
 
     .option:disabled { cursor: default; }
 
-    .option.correct {
-      background: var(--ok-bg);
-      border-color: var(--ok);
-      color: var(--ok);
+    /* Respuesta seleccionada: estilo neutro, sin revelar si es correcta o no */
+    .option.selected {
+      background: rgba(201, 168, 76, 0.12);
+      border-color: var(--gold);
+      color: var(--gold-dark);
       font-weight: 600;
     }
 
-    .option.correct .letter { background: var(--ok); color: #fff; }
-
-    .option.wrong {
-      background: var(--ko-bg);
-      border-color: var(--ko);
-      color: var(--ko);
-      animation: shake 0.4s ease;
-    }
-
-    .option.wrong .letter { background: var(--ko); color: #fff; }
+    .option.selected .letter { background: var(--gold); color: #fff; }
 
     .option.dim { opacity: 0.45; }
 
@@ -390,12 +382,6 @@
     @keyframes popIn {
       from { transform: scale(0.4); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -676,22 +662,11 @@
       var q = QUESTIONS[state.index];
       var acierto = q.sinPuntuar ? true : opt.correct;
 
-      if (q.sinPuntuar) {
-        btn.classList.add('correct');
-        buttons.forEach(function (b) { if (b !== btn) b.classList.add('dim'); });
-      } else {
-        if (opt.correct) {
-          state.score++;
-          btn.classList.add('correct');
-        } else {
-          btn.classList.add('wrong');
-        }
-        buttons.forEach(function (b) {
-          var isCorrect = b.querySelector('span:last-child').textContent === q.opciones[q.correcta];
-          if (isCorrect) b.classList.add('correct');
-          else if (b !== btn) b.classList.add('dim');
-        });
-      }
+      if (!q.sinPuntuar && opt.correct) state.score++;
+
+      // Feedback neutro: solo se marca la opcion elegida, sin indicar si es correcta
+      btn.classList.add('selected');
+      buttons.forEach(function (b) { if (b !== btn) b.classList.add('dim'); });
 
       state.answers.push({
         pregunta: q.pregunta,
@@ -707,7 +682,7 @@
         } else {
           finish();
         }
-      }, acierto ? 900 : 1400);
+      }, 700);
     }
 
     // ---------- Final ----------
