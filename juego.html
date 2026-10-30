@@ -547,8 +547,8 @@
       return 'Bueno... lo importante es que vengas a la boda. ¡Allí nos conocerás mucho mejor!';
     }
 
-    // Envio de resultados (FormSubmit, mismo correo que las confirmaciones)
-    var FORM_EMAIL = 'victoryleti29@gmail.com';
+    // Envio de resultados (Web3Forms, misma clave/correo que las confirmaciones)
+    var WEB3FORMS_KEY = 'c5b084f1-d6ef-4d72-b8c6-b1ec4370ef28';
     var TOTAL_PUNTOS = QUESTIONS.filter(function (q) { return !q.sinPuntuar; }).length;
     var STORAGE_KEY = 'vl_quiz_result';
 
@@ -728,9 +728,9 @@
       }).join('\n');
 
       var payload = {
-        _subject: '[JUEGO] ' + r.nombre + ' - ' + r.aciertos + '/' + r.total + ' en ' + formatTime(r.tiempo),
-        _template: 'table',
-        _captcha: 'false',
+        access_key: WEB3FORMS_KEY,
+        subject: '[JUEGO] ' + r.nombre + ' - ' + r.aciertos + '/' + r.total + ' en ' + formatTime(r.tiempo),
+        from_name: 'Juego Víctor & Leticia',
         Nombre: r.nombre,
         Aciertos: r.aciertos + ' de ' + r.total,
         Tiempo: formatTime(r.tiempo) + ' (' + r.tiempo + ' s)',
@@ -738,14 +738,14 @@
         Respuestas: detalle
       };
 
-      fetch('https://formsubmit.co/ajax/' + FORM_EMAIL, {
+      fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       })
       .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('HTTP ' + res.status)); })
       .then(function (data) {
-        if (data && (data.success === 'true' || data.success === true)) {
+        if (data && data.success !== false && data.success !== 'false') {
           r.enviado = true;
           save(r);
           setStatus('Resultado registrado. ¡Mucha suerte!', 'ok');

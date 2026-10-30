@@ -617,8 +617,8 @@
   if (hotelYes) hotelYes.addEventListener('change', toggleHotelNotice);
   if (hotelNo) hotelNo.addEventListener('change', toggleHotelNotice);
 
-  // Enviar formulario: envio tradicional a FormSubmit, que redirige a
-  // gracias.html (campo _next). Solo bloqueamos el boton para evitar dobles envios.
+  // Enviar formulario: envio tradicional a Web3Forms, que redirige a
+  // gracias.html (campo redirect). Solo bloqueamos el boton para evitar dobles envios.
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', function () {
       var submitBtn = document.getElementById('rsvp-submit');
